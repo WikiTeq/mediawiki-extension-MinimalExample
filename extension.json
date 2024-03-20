@@ -20,6 +20,14 @@
     "ExtensionMessagesFiles": {
         "MinimalExampleAlias": "MinimalExample.alias.php"
     },
+    "HookHandlers": {
+        "parser": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\ParserHooks"
+        }
+    },
+    "Hooks": {
+        "ParserFirstCallInit": "parser"
+    },
     "SpecialPages": {
         "DoesUserExist": {
             "class": "\\MediaWiki\\Extension\\MinimalExample\\SpecialDoesUserExist",
