@@ -6,5 +6,11 @@
     },
     "minimalexample-desc": "Minimal example of MediaWiki extensions",
     "doesuserexist": "Does a user exist?",
-    "doesuserexist-summary": "Check if a user exists (as a demonstration of special pages)."
+    "doesuserexist-summary": "Check if a user exists (as a demonstration of special pages).",
+    "doesuserexist-username-input": "Username:",
+    "doesuserexist-perform-check": "Check if a user exists!",
+    "doesuserexist-does-not-exist": "No user with the name `$1` exists.",
+    "doesuserexist-exists-exact": "A user exists with the name `$1`.",
+    "doesuserexist-exists-normalized": "A user exists with the name `$1` which is the normalized form of `$2`.",
+    "doesuserexist-exists-hidden": "'''Note''': this user account is suppressed, and is hidden from non-privileged viewers."
 }

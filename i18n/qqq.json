@@ -6,5 +6,11 @@
     },
     "minimalexample-desc": "{{desc|name=MinimalExample}}",
     "doesuserexist": "{{doc-special|DoesUserExist}}",
-    "doesuserexist-summary": "Summary of the special page [[Special:DoesUserExist]]"
+    "doesuserexist-summary": "Summary of the special page [[Special:DoesUserExist]]",
+    "doesuserexist-username-input": "Label for the username field on [[Special:DoesUserExist]]",
+    "doesuserexist-perform-check": "Label for the submission button on [[Special:DoesUserExist]]",
+    "doesuserexist-does-not-exist": "Message shown when no user exists with the given name.\n\nParameters:\n* $1 - the requested name",
+    "doesuserexist-exists-exact": "Message shown when a user exists with exactly the given name.\n\nParameters:\n* $1 - the requested name",
+    "doesuserexist-exists-normalized": "Message shown when a user exists with the normalized form of the given name.\n\nParameters:\n* $1 - the normalized name\n* $2 - the requested name",
+    "doesuserexist-exists-hidden": "Message shown to privileged users when a user exists but is hidden."
 }

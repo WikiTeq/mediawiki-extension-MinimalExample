@@ -63,7 +63,7 @@ class SpecialDoesUserExist extends SpecialPage {
         // Fields that our form will have
         $fields = [
             'Name' => [
-                'label' => 'Username:',
+                'label-message' => 'doesuserexist-username-input',
 
                 // uses HTMLTextField for display
                 'type' => 'text',
@@ -78,7 +78,7 @@ class SpecialDoesUserExist extends SpecialPage {
         $form = HTMLForm::factory( 'ooui', $fields, $this->getContext() );
 
         // Add a custom label for the submission button
-        $form->setSubmitText( 'Check if a user exists!' );
+        $form->setSubmitTextMsg( 'doesuserexist-perform-check' );
 
         // Use GET submissions so that the requested username is in the URL;
         // this isn't needed but makes things clearer
@@ -106,8 +106,9 @@ class SpecialDoesUserExist extends SpecialPage {
             $usernameToCheck
         );
         if ( $userIdentity === null ) {
-            $this->getOutput()->addWikiTextAsInterface(
-                "No user with the name `$usernameToCheck` exists."
+            $this->getOutput()->addWikiMsg(
+                'doesuserexist-does-not-exist',
+                $usernameToCheck
             );
             return;
         }
@@ -128,8 +129,9 @@ class SpecialDoesUserExist extends SpecialPage {
         // permission
         if ( $hidden && !$this->getAuthority()->isAllowed( 'hideuser' ) ) {
             // Pretend like the user does not exist
-            $this->getOutput()->addWikiTextAsInterface(
-                "No user with the name `$usernameToCheck` exists."
+            $this->getOutput()->addWikiMsg(
+                'doesuserexist-does-not-exist',
+                $usernameToCheck
             );
             return;
         }
@@ -139,20 +141,22 @@ class SpecialDoesUserExist extends SpecialPage {
         $normalName = $userIdentity->getName();
         $usernameNormalized = $normalName !== $usernameToCheck;
         if ( $usernameNormalized ) {
-            $this->getOutput()->addWikiTextAsInterface(
-                "A user exists with the name `$normalName`"
-                . " which is the normalized form of `$usernameToCheck`."
+            $this->getOutput()->addWikiMsg(
+                'doesuserexist-exists-normalized',
+                $normalName,
+                $usernameToCheck
             );
         } else {
-            $this->getOutput()->addWikiTextAsInterface(
-                "A user exists with the name `$normalName`."
+            $this->getOutput()->addWikiMsg(
+                'doesuserexist-exists-exact',
+                $usernameToCheck
             );
         }
         // If the user was hidden, add a note saying so; if we got here and
         // the user is hidden the viewer must be able to see hidden users.
         if ( $hidden ) {
-            $this->getOutput()->addWikiTextAsInterface(
-                "'''Note''': this user account is suppressed, and is hidden from non-privileged viewers."
+            $this->getOutput()->addWikiMsg(
+                'doesuserexist-exists-hidden'
             );
         }
     }
