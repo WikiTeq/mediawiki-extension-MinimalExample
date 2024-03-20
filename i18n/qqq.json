@@ -4,5 +4,7 @@
             "Daniel Scherzer"
         ]
     },
-    "minimalexample-desc": "{{desc|name=MinimalExample}}"
+    "minimalexample-desc": "{{desc|name=MinimalExample}}",
+    "doesuserexist": "{{doc-special|DoesUserExist}}",
+    "doesuserexist-summary": "Summary of the special page [[Special:DoesUserExist]]"
 }

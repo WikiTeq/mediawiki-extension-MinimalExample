@@ -4,5 +4,7 @@
             "Daniel Scherzer"
         ]
     },
-    "minimalexample-desc": "Minimal example of MediaWiki extensions"
+    "minimalexample-desc": "Minimal example of MediaWiki extensions",
+    "doesuserexist": "Does a user exist?",
+    "doesuserexist-summary": "Check if a user exists (as a demonstration of special pages)."
 }

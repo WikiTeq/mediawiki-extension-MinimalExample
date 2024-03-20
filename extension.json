@@ -16,5 +16,13 @@
             "i18n"
         ]
     },
+    "ExtensionMessagesFiles": {
+        "MinimalExampleAlias": "MinimalExample.alias.php"
+    },
+    "SpecialPages": {
+        "DoesUserExist": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\SpecialDoesUserExist"
+        }
+    },
     "manifest_version": 2
 }
