@@ -4,5 +4,6 @@
             "Daniel Scherzer"
         ]
     },
-    "apihelp-doesuserexist-summary": "{{doc-apihelp-summary|doesuserexist}}"
+    "apihelp-doesuserexist-summary": "{{doc-apihelp-summary|doesuserexist}}",
+    "apihelp-doesuserexist-param-username": "{{doc-apihelp-param|doesuserexist|username}}"
 }

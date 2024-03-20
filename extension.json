@@ -31,7 +31,11 @@
     },
     "APIModules": {
         "doesuserexist": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\ApiDoesUserExist"
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\ApiDoesUserExist",
+            "services": [
+                "UserFactory",
+                "UserIdentityLookup"
+            ]
         }
     },
     "manifest_version": 2

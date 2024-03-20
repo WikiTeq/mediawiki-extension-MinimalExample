@@ -4,5 +4,6 @@
             "Daniel Scherzer"
         ]
     },
-    "apihelp-doesuserexist-summary": "Check if one or more users exist"
+    "apihelp-doesuserexist-summary": "Check if one or more users exist",
+    "apihelp-doesuserexist-param-username": "Username to check"
 }
