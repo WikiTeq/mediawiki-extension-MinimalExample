@@ -1,4 +1,20 @@
 {
     "name": "MinimalExample",
+    "author": [
+        "Daniel Scherzer"
+    ],
+    "descriptionmsg": "minimalexample-desc",
+    "type": "other",
+    "requires": {
+        "MediaWiki": ">= 1.39"
+    },
+    "AutoloadNamespaces": {
+        "MediaWiki\\Extension\\MinimalExample\\": "src/"
+    },
+    "MessagesDirs": {
+        "MinimalExample": [
+            "i18n"
+        ]
+    },
     "manifest_version": 2
 }
