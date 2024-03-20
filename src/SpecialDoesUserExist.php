@@ -3,11 +3,13 @@
 namespace MediaWiki\Extension\MinimalExample;
 
 use HTMLForm;
+use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentityLookup;
 use SpecialPage;
 
 class SpecialDoesUserExist extends SpecialPage {
 
+    private UserFactory $userFactory;
     private UserIdentityLookup $userLookup;
 
     /**
@@ -15,10 +17,15 @@ class SpecialDoesUserExist extends SpecialPage {
      * can be provided directly to the special page rather than needing to
      * fetch them from MediaWikiServices.
      *
+     * @param UserFactory $userFactory
      * @param UserIdentityLookup $userLookup
      */
-    public function __construct( UserIdentityLookup $userLookup ) {
+    public function __construct(
+        UserFactory $userFactory,
+        UserIdentityLookup $userLookup
+    ) {
         parent::__construct( 'DoesUserExist' );
+        $this->userFactory = $userFactory;
         $this->userLookup = $userLookup;
     }
 
@@ -104,8 +111,31 @@ class SpecialDoesUserExist extends SpecialPage {
             );
             return;
         }
-        // If we looked up the user with a name different from the real one
-        // and it got normalized, say so
+        // Since the user exists, we also need to check if they are "hidden",
+        // meaning that mentions of their username were suppressed on the wiki
+        // and the existence should only be revealed if the viewer has special
+        // permissions. Otherwise, this would leak private information.
+        // This is an easy step to forget, and has affected WMF-deployed
+        // extensions repeatedly in the past.
+
+        // There is no way to check if a `UserIdentity` (which is what
+        // UserIdentityLookup::getUserIdentityByName() will return if a user
+        // exists) is hidden directly; we need a full `User` object.
+        $userObj = $this->userFactory->newFromUserIdentity( $userIdentity );
+        $hidden = $userObj->isHidden();
+
+        // If the user is hidden, require that the viewer have the `hideuser`
+        // permission
+        if ( $hidden && !$this->getAuthority()->isAllowed( 'hideuser' ) ) {
+            // Pretend like the user does not exist
+            $this->getOutput()->addWikiTextAsInterface(
+                "No user with the name `$usernameToCheck` exists."
+            );
+            return;
+        }
+
+        // Either not hidden or viewer has the ability to see hidden users
+
         $normalName = $userIdentity->getName();
         $usernameNormalized = $normalName !== $usernameToCheck;
         if ( $usernameNormalized ) {
@@ -116,6 +146,13 @@ class SpecialDoesUserExist extends SpecialPage {
         } else {
             $this->getOutput()->addWikiTextAsInterface(
                 "A user exists with the name `$normalName`."
+            );
+        }
+        // If the user was hidden, add a note saying so; if we got here and
+        // the user is hidden the viewer must be able to see hidden users.
+        if ( $hidden ) {
+            $this->getOutput()->addWikiTextAsInterface(
+                "'''Note''': this user account is suppressed, and is hidden from non-privileged viewers."
             );
         }
     }

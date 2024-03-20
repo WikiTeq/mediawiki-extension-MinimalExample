@@ -23,6 +23,7 @@
         "DoesUserExist": {
             "class": "\\MediaWiki\\Extension\\MinimalExample\\SpecialDoesUserExist",
             "services": [
+                "UserFactory",
                 "UserIdentityLookup"
             ]
         }
