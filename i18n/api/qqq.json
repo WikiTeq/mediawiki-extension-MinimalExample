@@ -5,5 +5,8 @@
         ]
     },
     "apihelp-doesuserexist-summary": "{{doc-apihelp-summary|doesuserexist}}",
-    "apihelp-doesuserexist-param-username": "{{doc-apihelp-param|doesuserexist|username}}"
+    "apihelp-doesuserexist-param-username": "{{doc-apihelp-param|doesuserexist|username}}",
+    "apihelp-doesuserexist-example-mwdefault-exists": "{{doc-apihelp-example|doesuserexist}}",
+    "apihelp-doesuserexist-example-mwdefault-normalized": "{{doc-apihelp-example|doesuserexist}}",
+    "apihelp-doesuserexist-example-invalid-slash": "{{doc-apihelp-example|doesuserexist}}"
 }

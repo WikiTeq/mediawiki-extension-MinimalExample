@@ -111,4 +111,15 @@ class ApiDoesUserExist extends ApiBase {
             ],
         ];
     }
+
+    protected function getExamplesMessages() {
+        return [
+            'action=doesuserexist&username=MediaWiki default'
+                => 'apihelp-doesuserexist-example-mwdefault-exists',
+            'action=doesuserexist&username=mediaWiki default'
+                => 'apihelp-doesuserexist-example-mwdefault-normalized',
+            'action=doesuserexist&username=Foo/bar'
+                => 'apihelp-doesuserexist-example-invalid-slash',
+        ];
+    }
 }
