@@ -13,7 +13,8 @@
     },
     "MessagesDirs": {
         "MinimalExample": [
-            "i18n"
+            "i18n",
+            "i18n/api"
         ]
     },
     "ExtensionMessagesFiles": {
@@ -26,6 +27,11 @@
                 "UserFactory",
                 "UserIdentityLookup"
             ]
+        }
+    },
+    "APIModules": {
+        "doesuserexist": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\ApiDoesUserExist"
         }
     },
     "manifest_version": 2
