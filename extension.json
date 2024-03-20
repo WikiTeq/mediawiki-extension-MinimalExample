@@ -22,7 +22,10 @@
     },
     "HookHandlers": {
         "parser": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\ParserHooks"
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\ParserHooks",
+            "services": [
+                "TitleFactory"
+            ]
         }
     },
     "Hooks": {
