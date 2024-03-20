@@ -21,7 +21,10 @@
     },
     "SpecialPages": {
         "DoesUserExist": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\SpecialDoesUserExist"
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\SpecialDoesUserExist",
+            "services": [
+                "UserIdentityLookup"
+            ]
         }
     },
     "manifest_version": 2

@@ -3,12 +3,23 @@
 namespace MediaWiki\Extension\MinimalExample;
 
 use HTMLForm;
+use MediaWiki\User\UserIdentityLookup;
 use SpecialPage;
 
 class SpecialDoesUserExist extends SpecialPage {
 
-    public function __construct() {
+    private UserIdentityLookup $userLookup;
+
+    /**
+     * Using dependency injection via ObjectFactory specifications, services
+     * can be provided directly to the special page rather than needing to
+     * fetch them from MediaWikiServices.
+     *
+     * @param UserIdentityLookup $userLookup
+     */
+    public function __construct( UserIdentityLookup $userLookup ) {
         parent::__construct( 'DoesUserExist' );
+        $this->userLookup = $userLookup;
     }
 
     /**
@@ -84,9 +95,29 @@ class SpecialDoesUserExist extends SpecialPage {
      * @param string $usernameToCheck
      */
     private function checkIfUserExists( string $usernameToCheck ): void {
-        $this->getOutput()->addWikiTextAsInterface(
-            "'''Unimplemented''': checking if the user `$usernameToCheck` exists."
+        $userIdentity = $this->userLookup->getUserIdentityByName(
+            $usernameToCheck
         );
+        if ( $userIdentity === null ) {
+            $this->getOutput()->addWikiTextAsInterface(
+                "No user with the name `$usernameToCheck` exists."
+            );
+            return;
+        }
+        // If we looked up the user with a name different from the real one
+        // and it got normalized, say so
+        $normalName = $userIdentity->getName();
+        $usernameNormalized = $normalName !== $usernameToCheck;
+        if ( $usernameNormalized ) {
+            $this->getOutput()->addWikiTextAsInterface(
+                "A user exists with the name `$normalName`"
+                . " which is the normalized form of `$usernameToCheck`."
+            );
+        } else {
+            $this->getOutput()->addWikiTextAsInterface(
+                "A user exists with the name `$normalName`."
+            );
+        }
     }
 
 }
