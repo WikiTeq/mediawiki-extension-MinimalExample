@@ -44,9 +44,23 @@ class ApiDoesUserExist extends ApiBase {
         // be an array, even if there is just one requested name
         $usernamesToCheck = $params['username'];
 
-        // Look through and check them each
+        // Look through and check them each, but only check a name once, if it
+        // was requested again add a warning. We compare names that are checked
+        // based on the *raw* requested username, not the normalized form, so
+        // that we don't warn users if they are checking different names that
+        // normalize to be the same.
+        $checked = [];
+
         $results = [];
         foreach ( $usernamesToCheck as $name ) {
+            if ( isset( $checked[ $name ] ) ) {
+                $this->addWarning( [
+                    'apiwarn-doesuserexist-duplicate-request',
+                    $name
+                ] );
+                continue;
+            }
+            $checked[ $name ] = true;
             $results[] = $this->checkIfUserExists( $name );
         }
 
@@ -116,6 +130,9 @@ class ApiDoesUserExist extends ApiBase {
                 ParamValidator::PARAM_REQUIRED => true,
                 // Support checking the existence of multiple users at a time
                 ParamValidator::PARAM_ISMULTI => true,
+                // Instead of silently ignoring duplicate names, we want to
+                // add a warning
+                ParamValidator::PARAM_ALLOW_DUPLICATES => true,
             ],
         ];
     }

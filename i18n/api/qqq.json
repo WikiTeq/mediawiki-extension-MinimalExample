@@ -9,5 +9,6 @@
     "apihelp-doesuserexist-example-mwdefault-exists": "{{doc-apihelp-example|doesuserexist}}",
     "apihelp-doesuserexist-example-mwdefault-normalized": "{{doc-apihelp-example|doesuserexist}}",
     "apihelp-doesuserexist-example-invalid-slash": "{{doc-apihelp-example|doesuserexist}}",
-    "apihelp-doesuserexist-example-multi": "{{doc-apihelp-example|doesuserexist}}"
+    "apihelp-doesuserexist-example-multi": "{{doc-apihelp-example|doesuserexist}}",
+    "apiwarn-doesuserexist-duplicate-request": "{{doc-apierror}}\n\nParameters:\n* $1 - a name requested multiple times"
 }
