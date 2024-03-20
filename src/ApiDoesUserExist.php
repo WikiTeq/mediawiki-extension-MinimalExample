@@ -39,16 +39,22 @@ class ApiDoesUserExist extends ApiBase {
     public function execute() {
         // Extract the parameters
         $params = $this->extractRequestParams();
-        // Get the specific `username` parameter, which must be set
-        $usernameToCheck = $params['username'];
-        // Get the data result
-        $result = $this->checkIfUserExists( $usernameToCheck );
+        // Get the specific `username` parameter, which must be set; since
+        // the parameter accepts multiple values, the result here will always
+        // be an array, even if there is just one requested name
+        $usernamesToCheck = $params['username'];
+
+        // Look through and check them each
+        $results = [];
+        foreach ( $usernamesToCheck as $name ) {
+            $results[] = $this->checkIfUserExists( $name );
+        }
 
         // Return the information
         $this->getResult()->addValue(
             null,
             $this->getModuleName(),
-            [ $result ]
+            $results
         );
     }
 
@@ -108,6 +114,8 @@ class ApiDoesUserExist extends ApiBase {
                 ParamValidator::PARAM_TYPE => 'string',
                 // Must be provided, like the special page
                 ParamValidator::PARAM_REQUIRED => true,
+                // Support checking the existence of multiple users at a time
+                ParamValidator::PARAM_ISMULTI => true,
             ],
         ];
     }
@@ -120,6 +128,8 @@ class ApiDoesUserExist extends ApiBase {
                 => 'apihelp-doesuserexist-example-mwdefault-normalized',
             'action=doesuserexist&username=Foo/bar'
                 => 'apihelp-doesuserexist-example-invalid-slash',
+            'action=doesuserexist&username=MediaWiki default|mediaWiki default|Foo/bar'
+                => 'apihelp-doesuserexist-example-multi',
         ];
     }
 }
