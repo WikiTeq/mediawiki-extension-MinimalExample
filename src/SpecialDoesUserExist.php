@@ -72,6 +72,9 @@ class SpecialDoesUserExist extends SpecialPage {
                 // of the default `wpName` (since this input field is under
                 // the key 'Name').
                 'name' => 'username',
+
+                // it does not make sense to submit an empty username
+                'required' => true,
             ],
         ];
         // Create the actual form; use OOUI for a nicer output
