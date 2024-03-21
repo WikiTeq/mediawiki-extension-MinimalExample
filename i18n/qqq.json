@@ -6,6 +6,7 @@
     },
     "minimalexample-desc": "{{desc|name=MinimalExample}}",
     "minimalexample-changecontentmodel-cache-note": "Note shown on [[Special:ChangeContentModel]] about outdated versions of <code><nowiki>{{PAGECONTENTMODEL:}}</nowiki></code>.",
+    "minimalexample-changecontentmodel-pref-label": "Used as a label for the checkbox in the \"editing\" tab on [[Special:Preferences]].",
     "doesuserexist": "{{doc-special|DoesUserExist}}",
     "doesuserexist-summary": "Summary of the special page [[Special:DoesUserExist]]",
     "doesuserexist-username-input": "Label for the username field on [[Special:DoesUserExist]]",

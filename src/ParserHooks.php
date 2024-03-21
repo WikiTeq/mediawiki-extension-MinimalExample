@@ -3,16 +3,20 @@
 namespace MediaWiki\Extension\MinimalExample;
 
 use MediaWiki\Hook\ParserFirstCallInitHook;
+use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\SpecialPage\Hook\SpecialPageBeforeFormDisplayHook;
+use MediaWiki\User\UserOptionsLookup;
 use Parser;
 use TitleFactory;
 
 class ParserHooks implements
+    GetPreferencesHook,
     ParserFirstCallInitHook,
     SpecialPageBeforeFormDisplayHook
 {
 
     private TitleFactory $titleFactory;
+    private UserOptionsLookup $userOptionsLookup;
 
     /**
      * Like special pages and API modules, hook handlers can have dependencies
@@ -20,9 +24,14 @@ class ParserHooks implements
      * huge change. Previously, services needed to be retrieved manually.
      * 
      * @param TitleFactory $titleFactory
+     * @param UserOptionsLookup $userOptionsLookup
      */
-    public function __construct( TitleFactory $titleFactory ) {
+    public function __construct(
+        TitleFactory $titleFactory,
+        UserOptionsLookup $userOptionsLookup
+    ) {
         $this->titleFactory = $titleFactory;
+        $this->userOptionsLookup = $userOptionsLookup;
     }
 
     /**
@@ -54,10 +63,35 @@ class ParserHooks implements
         if ( $name !== 'ChangeContentModel' ) {
             return;
         }
+        // Only show the message if the user wants the reminder
+        $showNote = $this->userOptionsLookup->getBoolOption(
+            $form->getContext()->getUser(),
+            'minimalexample-changecontentmodel-pref'
+        );
+        if ( !$showNote ) {
+            return;
+        }
         $message = $form->getContext()->msg(
             'minimalexample-changecontentmodel-cache-note'
         );
         $form->addPreHtml( $message->parse() );
+    }
+
+    /**
+     * This hook is used to register a new user preference - we want to allow
+     * users to disable the note about changing the content model leading to
+     * outdated page renderings.
+     *
+     * @param User $user
+     * @param array &$defaultPreferences
+     */
+    public function onGetPreferences( $user, &$defaultPreferences ) {
+        // The default value is configured in extension.json
+        $defaultPreferences['minimalexample-changecontentmodel-pref'] = [
+            'type' => 'check',
+            'section' => 'editing/editor',
+            'label-message' => 'minimalexample-changecontentmodel-pref-label',
+        ];
     }
 
     /**

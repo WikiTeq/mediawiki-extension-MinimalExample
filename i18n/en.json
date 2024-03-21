@@ -6,6 +6,7 @@
     },
     "minimalexample-desc": "Minimal example of MediaWiki extensions",
     "minimalexample-changecontentmodel-cache-note": "'''Note''': uses of <code><nowiki>{{PAGECONTENTMODEL:}}</nowiki></code> may show outdated results for a page whose content model changes. This can be fixed by [[:mediawikiwiki:Special:MyLanguage/Manual:Purge|purging]] affected pages.",
+    "minimalexample-changecontentmodel-pref-label": "Show a reminder on [[Special:ChangeContentModel]] that uses of <code><nowiki>{{PAGECONTENTMODEL:}}</nowiki></code> may temporarily show outdated results.",
     "doesuserexist": "Does a user exist?",
     "doesuserexist-summary": "Check if a user exists (as a demonstration of special pages).",
     "doesuserexist-username-input": "Username:",
