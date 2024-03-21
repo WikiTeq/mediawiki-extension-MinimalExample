@@ -6,6 +6,7 @@ use Content;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Node\Query;
 use League\CommonMark\Parser\MarkdownParser;
 use League\CommonMark\Renderer\HtmlRenderer;
@@ -73,8 +74,12 @@ class MarkdownContentHandler extends TextContentHandler {
         $env = new Environment( [
             'allow_unsafe_links' => false,
             'html_input' => 'escape',
+            'external_link' => [
+                'html_class' => 'external',
+            ],
         ] );
         $env->addExtension( new CommonMarkCoreExtension() );
+        $env->addExtension( new ExternalLinkExtension() );
         $parser = new MarkdownParser( $env );
         
         $parsedResult = $parser->parse( $content->getText() );
@@ -83,6 +88,8 @@ class MarkdownContentHandler extends TextContentHandler {
         $parserOutput->setText(
             $renderer->renderDocument( $parsedResult )
         );
+        // Make sure we have link styles, etc.
+        $parserOutput->addWrapperDivClass( 'mw-parser-output' );
 
         // Register links
         $allLinks = (new Query())
