@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extension\MinimalExample;
+namespace MediaWiki\Extension\MinimalExample\Markdown;
 
 use MediaWiki\Revision\Hook\ContentHandlerDefaultModelForHook;
 use Title;

@@ -28,7 +28,7 @@
             ]
         },
         "markdown": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\MarkdownHooks"
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownHooks"
         }
     },
     "Hooks": {
@@ -55,7 +55,7 @@
     },
     "ContentHandlers": {
         "markdown": {
-            "class": "MediaWiki\\Extension\\MinimalExample\\MarkdownContentHandler",
+            "class": "MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownContentHandler",
             "services": [
                 "ParserFactory",
                 "TitleFactory",
