@@ -49,5 +49,10 @@
             ]
         }
     },
+    "ContentHandlers": {
+        "markdown": {
+            "class": "MediaWiki\\Extension\\MinimalExample\\MarkdownContentHandler"
+        }
+    },
     "manifest_version": 2
 }
