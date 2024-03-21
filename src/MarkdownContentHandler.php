@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\MinimalExample;
 use Content;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Node\Query;
@@ -13,12 +14,16 @@ use League\CommonMark\Renderer\HtmlRenderer;
 use League\CommonMark\Util\RegexHelper;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\Utils\UrlUtils;
+use Parser;
+use ParserFactory;
+use ParserOptions;
 use ParserOutput;
 use TextContentHandler;
 use TitleFactory;
 
 class MarkdownContentHandler extends TextContentHandler {
 
+    private ParserFactory $parserFactory;
     private TitleFactory $titleFactory;
     private UrlUtils $urlUtils;
 
@@ -27,11 +32,18 @@ class MarkdownContentHandler extends TextContentHandler {
      * dependencies injected.
      * 
      * @param string $modelId
+     * @param ParserFactory $parserFactory
      * @param TitleFactory $titleFactory
      * @param UrlUtils $urlUtils
      */
-    public function __construct( string $modelId, TitleFactory $titleFactory, UrlUtils $urlUtils ) {
+    public function __construct(
+        string $modelId,
+        ParserFactory $parserFactory,
+        TitleFactory $titleFactory,
+        UrlUtils $urlUtils
+    ) {
         parent::__construct( MarkdownContent::CONTENT_MODEL );
+        $this->parserFactory = $parserFactory;
         $this->titleFactory = $titleFactory;
         $this->urlUtils = $urlUtils;
     }
@@ -80,9 +92,53 @@ class MarkdownContentHandler extends TextContentHandler {
         ] );
         $env->addExtension( new CommonMarkCoreExtension() );
         $env->addExtension( new ExternalLinkExtension() );
+
+        // We want a custom image renderer that works for MediaWiki images;
+        // but if we just replace the default one then we need to re-implement
+        // the logic to display broken images. Instead, let use add a custom
+        // node MWPreprocessedInline with its own renderer
+        $env->addRenderer(
+            MWPreprocessedInline::class,
+            new MWPreprocessedRenderer()
+        );
+
         $parser = new MarkdownParser( $env );
         
         $parsedResult = $parser->parse( $content->getText() );
+
+        // Handle images
+        $allImages = (new Query())
+            ->where(Query::type(Image::class))
+            ->findAll($parsedResult);
+        $mwParser = $this->parserFactory->getInstance();
+        foreach ( $allImages as $image ) {
+            $url = $image->getUrl();
+            // Ignore external links
+            $parsedUrl = parse_url( $url );
+            if ( isset( $parsedUrl['host'] ) ) {
+                $image->setUrl( '' );
+                continue;
+            }
+            // Otherwise, create the image and replace the default implementation
+            $mwParsedImageOut = $mwParser->parse(
+                '[[File:' . $url . ']]',
+                $cpoParams->getPage(),
+                ParserOptions::newFromAnon(),
+                true,
+                true,
+                $cpoParams->getRevId()
+            );
+            $mwParsedImageOut->clearWrapperDivClass();
+            $image->replaceWith(
+                new MWPreprocessedInline(
+                    Parser::stripOuterParagraph( $mwParsedImageOut->getRawText() )
+                )
+            );
+            // And register that the page uses the image, but don't copy
+            // the data about broken images to categories
+            $mwParsedImageOut->setCategories( [] );
+            $parserOutput->mergeTrackingMetaDataFrom( $mwParsedImageOut );
+        }
 
         $renderer = new HtmlRenderer( $env );
         $parserOutput->setText(
