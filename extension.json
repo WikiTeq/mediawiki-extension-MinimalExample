@@ -54,5 +54,6 @@
             "class": "MediaWiki\\Extension\\MinimalExample\\MarkdownContentHandler"
         }
     },
+    "load_composer_autoloader": true,
     "manifest_version": 2
 }

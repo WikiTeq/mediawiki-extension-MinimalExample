@@ -1,0 +1,6 @@
+
+{
+    "require": {
+        "league/commonmark": "2.4.2"
+    }
+}
