@@ -29,7 +29,8 @@
         }
     },
     "Hooks": {
-        "ParserFirstCallInit": "parser"
+        "ParserFirstCallInit": "parser",
+        "SpecialPageBeforeFormDisplay": "parser"
     },
     "SpecialPages": {
         "DoesUserExist": {
