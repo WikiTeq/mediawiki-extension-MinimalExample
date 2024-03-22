@@ -10,5 +10,10 @@
     "apihelp-doesuserexist-example-mwdefault-normalized": "Check if the user <kbd>mediaWiki default</kbd> exists. This account is used by the MediaWiki installer and should always exist, but the name will be normalized to <kbd>MediaWiki default</kbd>.",
     "apihelp-doesuserexist-example-invalid-slash": "Check if the user <kbd>Foo/bar</kbd> exists. This account name is invalid and should never exist.",
     "apihelp-doesuserexist-example-multi": "Check if the users <kbd>MediaWiki default</kbd>, <kbd>mediaWiki default</kbd>, and <kbd>Foo/bar</kbd> exist, in a single request.",
-    "apiwarn-doesuserexist-duplicate-request": "Duplicate request to check the name: $1"
+    "apiwarn-doesuserexist-duplicate-request": "Duplicate request to check the name: $1",
+    "apihelp-getsyntaxhelp-summary": "Get the help page for a content model",
+    "apihelp-getsyntaxhelp-param-contentmodel": "The content model to get a help page for",
+    "apihelp-getsyntaxhelp-example-wikitext": "Get the help page for <kbd>wikitext</kbd>, which is commonly configured.",
+    "apihelp-getsyntaxhelp-example-unknown": "Get the help page for <kbd>unknown</kbd>, which is unlikely to be configured.",
+    "apihelp-getsyntaxhelp-example-invalid": "Try to get the help page for <kbd>invalid</kbd>, which should fail since that is unlikely to be a valid content model."
 }
