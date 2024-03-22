@@ -57,6 +57,7 @@
         "markdown": {
             "class": "MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownContentHandler",
             "services": [
+                "ParserFactory",
                 "TitleFactory",
                 "UrlUtils"
             ]
