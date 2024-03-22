@@ -12,6 +12,8 @@
     "configuresyntaxhelp-model": "Help page for the content model <code>$1</code>:",
     "configuresyntaxhelp-saved": "Configuration saved.",
     "syntaxhelp-help-label": "Syntax help",
+    "right-syntaxhelp-configure": "Configure syntax help pages",
+    "action-syntaxhelp-configure": "configure syntax help pages",
     "doesuserexist": "Does a user exist?",
     "doesuserexist-summary": "Check if a user exists (as a demonstration of special pages).",
     "doesuserexist-username-input": "Username:",
