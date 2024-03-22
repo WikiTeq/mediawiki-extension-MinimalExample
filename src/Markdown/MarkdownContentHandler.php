@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\MinimalExample\Markdown;
 use Content;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Node\Query;
@@ -13,6 +14,9 @@ use League\CommonMark\Renderer\HtmlRenderer;
 use League\CommonMark\Util\RegexHelper;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\Utils\UrlUtils;
+use Parser;
+use ParserFactory;
+use ParserOptions;
 use ParserOutput;
 use TextContentHandler;
 use TitleFactory;
@@ -22,6 +26,7 @@ use TitleFactory;
  */
 class MarkdownContentHandler extends TextContentHandler {
 
+    private ParserFactory $parserFactory;
     private TitleFactory $titleFactory;
     private UrlUtils $urlUtils;
 
@@ -30,17 +35,20 @@ class MarkdownContentHandler extends TextContentHandler {
      * dependencies injected.
      * 
      * @param string $modelId
+     * @param ParserFactory $parserFactory
      * @param TitleFactory $titleFactory
      * @param UrlUtils $urlUtils
      */
     public function __construct(
         string $modelId,
+        ParserFactory $parserFactory,
         TitleFactory $titleFactory,
         UrlUtils $urlUtils
     ) {
         // The model id should always be 'markdown' since extending this class
         // is not supported
         parent::__construct( MarkdownContent::CONTENT_MODEL );
+        $this->parserFactory = $parserFactory;
         $this->titleFactory = $titleFactory;
         $this->urlUtils = $urlUtils;
     }
@@ -96,8 +104,59 @@ class MarkdownContentHandler extends TextContentHandler {
         $env->addExtension( new CommonMarkCoreExtension() );
         $env->addExtension( new ExternalLinkExtension() );
 
+        // We want a custom image renderer that works for MediaWiki images;
+        // but if we just replace the default one then we need to re-implement
+        // the logic to display broken images. Instead, let use add a custom
+        // node type, `MWPreprocessedInline` with its own renderer that will
+        // just spit out the HTML that the node holds.
+        $env->addRenderer(
+            MWPreprocessedInline::class,
+            new MWPreprocessedRenderer()
+        );
+
         $parser = new MarkdownParser( $env );        
         $parsedResult = $parser->parse( $content->getText() );
+
+        // For any image that has its source as a valid URL, replace it with
+        // an empty string to prevent loading images from external sources.
+        // For other images, assume that they are meant to refer to load file
+        // names, and use the MediaWiki parser to locate the files and generate
+        // the correct output.
+        $allImages = ( new Query() )
+            ->where( Query::type( Image::class ) )
+            ->findAll( $parsedResult );
+        $mwParser = $this->parserFactory->getInstance();
+        foreach ( $allImages as $image ) {
+            $url = $image->getUrl();
+            // For any external image, just stop the rendering
+            $parsedUrl = parse_url( $url );
+            if ( isset( $parsedUrl['host'] ) ) {
+                $image->setUrl( '' );
+                continue;
+            }
+            // Otherwise, render the image with MediaWiki, and then replace the
+            // `Image` node with our own `MWPreprocessedInline` type.
+            $mwParsedImageOut = $mwParser->parse(
+                '[[File:' . $url . ']]',
+                $cpoParams->getPage(),
+                ParserOptions::newFromAnon(),
+                true,
+                true,
+                $cpoParams->getRevId()
+            );
+            $mwParsedImageOut->clearWrapperDivClass();
+            $image->replaceWith(
+                new MWPreprocessedInline(
+                    Parser::stripOuterParagraph( $mwParsedImageOut->getRawText() )
+                )
+            );
+            // Register that the page uses the image, like we do for links
+            // lower down, but don't copy the data about broken images to, since
+            // we don't have support for other categories at this point and it
+            // would just be confusing.
+            $mwParsedImageOut->setCategories( [] );
+            $parserOutput->mergeTrackingMetaDataFrom( $mwParsedImageOut );
+        }
 
         $renderer = new HtmlRenderer( $env );
         $parserOutput->setText(
