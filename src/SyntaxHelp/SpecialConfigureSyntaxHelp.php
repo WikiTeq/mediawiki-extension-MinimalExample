@@ -31,7 +31,7 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
         LinkTargetLookup $linkTargetLookup,
         MediaWikiTitleCodec $titleCodec
     ) {
-        parent::__construct( 'ConfigureSyntaxHelp' );
+        parent::__construct( 'ConfigureSyntaxHelp', 'syntaxhelp-configure' );
         $this->contentHandlerFactory = $contentHandlerFactory;
         $this->dbLoadBalancer = $dbLoadBalancer;
         $this->linkTargetLookup = $linkTargetLookup;
