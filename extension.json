@@ -52,6 +52,15 @@
                 "UserFactory",
                 "UserIdentityLookup"
             ]
+        },
+        "ConfigureSyntaxHelp": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SpecialConfigureSyntaxHelp",
+            "services": [
+                "ContentHandlerFactory",
+                "DBLoadBalancer",
+                "LinkTargetLookup",
+                "TitleFormatter"
+            ]
         }
     },
     "APIModules": {
