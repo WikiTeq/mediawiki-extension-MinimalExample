@@ -70,6 +70,15 @@
                 "UserFactory",
                 "UserIdentityLookup"
             ]
+        },
+        "getsyntaxhelp": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\ApiGetSyntaxHelp",
+            "services": [
+                "ContentHandlerFactory",
+                "DBLoadBalancer",
+                "LinkTargetLookup",
+                "TitleFormatter"
+            ]
         }
     },
     "ContentHandlers": {
