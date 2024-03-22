@@ -104,6 +104,9 @@
                 "mediawiki.jqueryMsg",
                 "mediawiki.Title"
             ],
+            "styles": [
+                "ext.minimalexample.syntaxhelp.css"
+            ],
             "packageFiles": [
                 "ext.minimalexample.syntaxhelp.js"
             ],

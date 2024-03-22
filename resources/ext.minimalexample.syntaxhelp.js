@@ -37,7 +37,12 @@ const makePageLink = ( pageName ) => {
     // parameters so that the overall link can be in parentheses that are
     // localized properly; use parseDom() so that we also get a jQuery element
     // back.
-    return mw.message( 'parentheses', $link ).parseDom();
+    const $parenLink = mw.message( 'parentheses', $link ).parseDom();
+    // Wrap the result in an overall <span> with an ID so that we can target it
+    // with styles; see ext.minimalexample.syntaxhelp.css for the styles.
+    return $( '<span>' )
+        .attr( 'id', 'ext-minimalexample-help-link-wrapper' )
+        .append( $parenLink );
 };
 
 /**
