@@ -12,6 +12,8 @@
     "configuresyntaxhelp-model": "Label for a help page field on [[Special:ConfigureSyntaxHelp]].\n\nParameters:\n* $1 - the name of the content model",
     "configuresyntaxhelp-saved": "Success message on [[Special:ConfigureSyntaxHelp]].",
     "syntaxhelp-help-label": "Syntax help",
+    "right-syntaxhelp-configure": "{{doc-right|syntaxhelp-configure}}",
+    "action-syntaxhelp-configure": "{{doc-action|syntaxhelp-configure}}",
     "doesuserexist": "{{doc-special|DoesUserExist}}",
     "doesuserexist-summary": "Summary of the special page [[Special:DoesUserExist]]",
     "doesuserexist-username-input": "Label for the username field on [[Special:DoesUserExist]]",
