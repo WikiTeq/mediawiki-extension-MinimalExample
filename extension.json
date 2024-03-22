@@ -36,6 +36,9 @@
         },
         "syntaxhelp-schema": {
             "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SchemaHooks"
+        },
+        "syntaxhelp-display": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\DisplayHooks"
         }
     },
     "Hooks": {
@@ -43,7 +46,8 @@
         "ParserFirstCallInit": "parser",
         "SpecialPageBeforeFormDisplay": "parser",
         "ContentHandlerDefaultModelFor": "markdown",
-        "LoadExtensionSchemaUpdates": "syntaxhelp-schema"
+        "LoadExtensionSchemaUpdates": "syntaxhelp-schema",
+        "BeforePageDisplay": "syntaxhelp-display"
     },
     "SpecialPages": {
         "DoesUserExist": {
@@ -88,6 +92,27 @@
                 "ParserFactory",
                 "TitleFactory",
                 "UrlUtils"
+            ]
+        }
+    },
+    "ResourceModules": {
+        "ext.minimalexample.syntaxhelp": {
+            "localBasePath": "resources",
+            "remoteExtPath": "MinimalExample/resources",
+            "dependencies": [
+                "mediawiki.api",
+                "mediawiki.jqueryMsg",
+                "mediawiki.Title"
+            ],
+            "styles": [
+                "ext.minimalexample.syntaxhelp.css"
+            ],
+            "packageFiles": [
+                "ext.minimalexample.syntaxhelp.js"
+            ],
+            "messages": [
+                "parentheses",
+                "syntaxhelp-help-label"
             ]
         }
     },
