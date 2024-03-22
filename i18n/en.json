@@ -5,6 +5,7 @@
         ]
     },
     "minimalexample-desc": "Minimal example of MediaWiki extensions",
+    "content-model-markdown": "Markdown",
     "doesuserexist": "Does a user exist?",
     "doesuserexist-summary": "Check if a user exists (as a demonstration of special pages).",
     "doesuserexist-username-input": "Username:",
