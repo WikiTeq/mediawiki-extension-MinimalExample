@@ -55,7 +55,11 @@
     },
     "ContentHandlers": {
         "markdown": {
-            "class": "MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownContentHandler"
+            "class": "MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownContentHandler",
+            "services": [
+                "TitleFactory",
+                "UrlUtils"
+            ]
         }
     },
     "load_composer_autoloader": true,
