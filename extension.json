@@ -26,10 +26,14 @@
             "services": [
                 "TitleFactory"
             ]
+        },
+        "markdown": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownHooks"
         }
     },
     "Hooks": {
-        "ParserFirstCallInit": "parser"
+        "ParserFirstCallInit": "parser",
+        "ContentHandlerDefaultModelFor": "markdown"
     },
     "SpecialPages": {
         "DoesUserExist": {
