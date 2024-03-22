@@ -33,13 +33,17 @@
         },
         "markdown": {
             "class": "\\MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownHooks"
+        },
+        "syntaxhelp-schema": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SchemaHooks"
         }
     },
     "Hooks": {
         "GetPreferences": "parser",
         "ParserFirstCallInit": "parser",
         "SpecialPageBeforeFormDisplay": "parser",
-        "ContentHandlerDefaultModelFor": "markdown"
+        "ContentHandlerDefaultModelFor": "markdown",
+        "LoadExtensionSchemaUpdates": "syntaxhelp-schema"
     },
     "SpecialPages": {
         "DoesUserExist": {
@@ -47,6 +51,15 @@
             "services": [
                 "UserFactory",
                 "UserIdentityLookup"
+            ]
+        },
+        "ConfigureSyntaxHelp": {
+            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SpecialConfigureSyntaxHelp",
+            "services": [
+                "ContentHandlerFactory",
+                "DBLoadBalancer",
+                "LinkTargetLookup",
+                "TitleFormatter"
             ]
         }
     },

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "me_syntaxhelp",
+        "comment": "Lookup for pages to get help with syntax for a content model",
+        "columns": [
+            {
+                "name": "mesh_content_model",
+                "comment": "*NAME* of content model, key to content_models.model_name, used instead  of id for simplicity, the table will be tiny",
+                "type": "binary",
+                "options": { "notnull": true, "length": 64 }
+            },
+            {
+                "name": "mesh_help_page",
+                "comment": "Key to linktarget.lt_id for the help page, since the page might not exist",
+                "type": "bigint",
+                "options": { "notnull": true, "unsigned": true }
+            }
+        ],
+        "indexes": [],
+        "pk": [ "mesh_content_model" ]
+    }
+]

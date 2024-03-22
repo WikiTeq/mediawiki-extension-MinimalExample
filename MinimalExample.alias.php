@@ -9,6 +9,7 @@ $specialPageAliases = [];
 /** English (English) */
 $specialPageAliases['en'] = [
     'DoesUserExist' => [ 'DoesUserExist' ],
+    'ConfigureSyntaxHelp' => [ 'ConfigureSyntaxHelp' ],
 ];
 
 $magicWords = [];
