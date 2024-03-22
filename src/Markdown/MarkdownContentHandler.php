@@ -3,7 +3,11 @@
 namespace MediaWiki\Extension\MinimalExample\Markdown;
 
 use Content;
-use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
+use League\CommonMark\Parser\MarkdownParser;
+use League\CommonMark\Renderer\HtmlRenderer;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use ParserOutput;
 use TextContentHandler;
@@ -64,11 +68,24 @@ class MarkdownContentHandler extends TextContentHandler {
         // to HTML, rather than trying to implement that parsing ourselves. We
         // prevent unsafe links, and for raw HTML we escape it the same way that
         // the core parser does for raw HTML in wikitext.
-        $converter = new CommonMarkConverter( [
+        $env = new Environment( [
             'allow_unsafe_links' => false,
             'html_input' => 'escape',
+            'external_link' => [
+                'html_class' => 'external',
+            ],
         ] );
-        $parsed = $converter->convert( $content->getText() );
-        $parserOutput->setText( $parsed );
+        $env->addExtension( new CommonMarkCoreExtension() );
+        $env->addExtension( new ExternalLinkExtension() );
+
+        $parser = new MarkdownParser( $env );        
+        $parsedResult = $parser->parse( $content->getText() );
+
+        $renderer = new HtmlRenderer( $env );
+        $parserOutput->setText(
+            $renderer->renderDocument( $parsedResult )
+        );
+        // Make sure we have link styles, etc.
+        $parserOutput->addWrapperDivClass( 'mw-parser-output' );
     }
 }
