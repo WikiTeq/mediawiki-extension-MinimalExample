@@ -33,6 +33,7 @@
     },
     "Hooks": {
         "ParserFirstCallInit": "parser",
+        "SpecialPageBeforeFormDisplay": "parser",
         "ContentHandlerDefaultModelFor": "markdown"
     },
     "SpecialPages": {
