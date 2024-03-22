@@ -20,11 +20,15 @@
     "ExtensionMessagesFiles": {
         "MinimalExampleAlias": "MinimalExample.alias.php"
     },
+    "DefaultUserOptions": {
+        "minimalexample-changecontentmodel-pref": true
+    },
     "HookHandlers": {
         "parser": {
             "class": "\\MediaWiki\\Extension\\MinimalExample\\ParserHooks",
             "services": [
-                "TitleFactory"
+                "TitleFactory",
+                "UserOptionsLookup"
             ]
         },
         "markdown": {
@@ -32,6 +36,7 @@
         }
     },
     "Hooks": {
+        "GetPreferences": "parser",
         "ParserFirstCallInit": "parser",
         "SpecialPageBeforeFormDisplay": "parser",
         "ContentHandlerDefaultModelFor": "markdown"
