@@ -3,10 +3,14 @@
 namespace MediaWiki\Extension\MinimalExample;
 
 use MediaWiki\Hook\ParserFirstCallInitHook;
+use MediaWiki\SpecialPage\Hook\SpecialPageBeforeFormDisplayHook;
 use Parser;
 use TitleFactory;
 
-class ParserHooks implements ParserFirstCallInitHook {
+class ParserHooks implements
+    ParserFirstCallInitHook,
+    SpecialPageBeforeFormDisplayHook
+{
 
     private TitleFactory $titleFactory;
 
@@ -35,6 +39,27 @@ class ParserHooks implements ParserFirstCallInitHook {
             // `#PAGECONTENTMODEL`
             Parser::SFH_NO_HASH
         );
+    }
+
+    /**
+     * This hook is called before the display of a special page that uses a
+     * form; Special:ChangeContentModel is one such page, and the one we want
+     * to add extra logic to. On that page we add a note at the top that uses
+     * of the `PAGECONTENTMODEL` parser function may display outdated results
+     * after the content model of the target page changes.
+     *
+     * @param string $name
+     * @param HTMLForm $form
+     * @return bool|void True or no return value to continue or false to abort
+     */
+    public function onSpecialPageBeforeFormDisplay( $name, $form ) {
+        if ( $name !== 'ChangeContentModel' ) {
+            return;
+        }
+        $message = $form->getContext()->msg(
+            'minimalexample-changecontentmodel-cache-note'
+        );
+        $form->addPreHtml( $message->parse() );
     }
 
     /**
