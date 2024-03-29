@@ -3,12 +3,14 @@
 		"league/commonmark": "2.4.2"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "38.0.0"
+		"mediawiki/mediawiki-codesniffer": "38.0.0",
+		"mediawiki/mediawiki-phan-config": "0.12.1"
 	},
 	"scripts": {
 		"test": [
 			"@phpcs"
 		],
+		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -sp --cache"
 	}
 }

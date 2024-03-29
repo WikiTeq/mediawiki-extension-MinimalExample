@@ -2,12 +2,14 @@
 
 namespace MediaWiki\Extension\MinimalExample;
 
+use HTMLForm;
 use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\SpecialPage\Hook\SpecialPageBeforeFormDisplayHook;
 use MediaWiki\User\UserOptionsLookup;
 use Parser;
 use TitleFactory;
+use User;
 
 class ParserHooks implements
 	GetPreferencesHook,
