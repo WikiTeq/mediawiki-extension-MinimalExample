@@ -1,19 +1,19 @@
 {
-    "@metadata": {
-        "authors": [
-            "Daniel Scherzer"
-        ]
-    },
-    "apihelp-doesuserexist-summary": "{{doc-apihelp-summary|doesuserexist}}",
-    "apihelp-doesuserexist-param-username": "{{doc-apihelp-param|doesuserexist|username}}",
-    "apihelp-doesuserexist-example-mwdefault-exists": "{{doc-apihelp-example|doesuserexist}}",
-    "apihelp-doesuserexist-example-mwdefault-normalized": "{{doc-apihelp-example|doesuserexist}}",
-    "apihelp-doesuserexist-example-invalid-slash": "{{doc-apihelp-example|doesuserexist}}",
-    "apihelp-doesuserexist-example-multi": "{{doc-apihelp-example|doesuserexist}}",
-    "apiwarn-doesuserexist-duplicate-request": "{{doc-apierror}}\n\nParameters:\n* $1 - a name requested multiple times",
-    "apihelp-getsyntaxhelp-summary": "{{doc-apihelp-summary|getsyntaxhelp}}}}",
-    "apihelp-getsyntaxhelp-param-contentmodel": "{{doc-apihelp-param|getsyntaxhelp|contentmodel}}",
-    "apihelp-getsyntaxhelp-example-wikitext": "{{doc-apihelp-example|getsyntaxhelp}}",
-    "apihelp-getsyntaxhelp-example-unknown": "{{doc-apihelp-example|getsyntaxhelp}}",
-    "apihelp-getsyntaxhelp-example-invalid": "{{doc-apihelp-example|getsyntaxhelp}}"
+	"@metadata": {
+		"authors": [
+			"Daniel Scherzer"
+		]
+	},
+	"apihelp-doesuserexist-summary": "{{doc-apihelp-summary|doesuserexist}}",
+	"apihelp-doesuserexist-param-username": "{{doc-apihelp-param|doesuserexist|username}}",
+	"apihelp-doesuserexist-example-mwdefault-exists": "{{doc-apihelp-example|doesuserexist}}",
+	"apihelp-doesuserexist-example-mwdefault-normalized": "{{doc-apihelp-example|doesuserexist}}",
+	"apihelp-doesuserexist-example-invalid-slash": "{{doc-apihelp-example|doesuserexist}}",
+	"apihelp-doesuserexist-example-multi": "{{doc-apihelp-example|doesuserexist}}",
+	"apiwarn-doesuserexist-duplicate-request": "{{doc-apierror}}\n\nParameters:\n* $1 - a name requested multiple times",
+	"apihelp-getsyntaxhelp-summary": "{{doc-apihelp-summary|getsyntaxhelp}}}}",
+	"apihelp-getsyntaxhelp-param-contentmodel": "{{doc-apihelp-param|getsyntaxhelp|contentmodel}}",
+	"apihelp-getsyntaxhelp-example-wikitext": "{{doc-apihelp-example|getsyntaxhelp}}",
+	"apihelp-getsyntaxhelp-example-unknown": "{{doc-apihelp-example|getsyntaxhelp}}",
+	"apihelp-getsyntaxhelp-example-invalid": "{{doc-apihelp-example|getsyntaxhelp}}"
 }

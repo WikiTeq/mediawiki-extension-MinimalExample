@@ -1,129 +1,129 @@
 {
-    "name": "MinimalExample",
-    "author": [
-        "Daniel Scherzer"
-    ],
-    "descriptionmsg": "minimalexample-desc",
-    "type": "other",
-    "requires": {
-        "MediaWiki": ">= 1.39"
-    },
-    "AutoloadNamespaces": {
-        "MediaWiki\\Extension\\MinimalExample\\": "src/"
-    },
-    "MessagesDirs": {
-        "MinimalExample": [
-            "i18n",
-            "i18n/api"
-        ]
-    },
-    "ExtensionMessagesFiles": {
-        "MinimalExampleAlias": "MinimalExample.alias.php"
-    },
-    "DefaultUserOptions": {
-        "minimalexample-changecontentmodel-pref": true
-    },
-    "AvailableRights": [
-        "syntaxhelp-configure"
-    ],
-    "GroupPermissions": {
-        "sysop": {
-            "syntaxhelp-configure": true
-        }
-    },
-    "HookHandlers": {
-        "parser": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\ParserHooks",
-            "services": [
-                "TitleFactory",
-                "UserOptionsLookup"
-            ]
-        },
-        "markdown": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownHooks"
-        },
-        "syntaxhelp-schema": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SchemaHooks"
-        },
-        "syntaxhelp-display": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\DisplayHooks"
-        }
-    },
-    "Hooks": {
-        "GetPreferences": "parser",
-        "ParserFirstCallInit": "parser",
-        "SpecialPageBeforeFormDisplay": "parser",
-        "ContentHandlerDefaultModelFor": "markdown",
-        "LoadExtensionSchemaUpdates": "syntaxhelp-schema",
-        "BeforePageDisplay": "syntaxhelp-display"
-    },
-    "SpecialPages": {
-        "DoesUserExist": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\SpecialDoesUserExist",
-            "services": [
-                "UserFactory",
-                "UserIdentityLookup"
-            ]
-        },
-        "ConfigureSyntaxHelp": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SpecialConfigureSyntaxHelp",
-            "services": [
-                "ContentHandlerFactory",
-                "DBLoadBalancer",
-                "LinkTargetLookup",
-                "TitleFormatter"
-            ]
-        }
-    },
-    "APIModules": {
-        "doesuserexist": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\ApiDoesUserExist",
-            "services": [
-                "UserFactory",
-                "UserIdentityLookup"
-            ]
-        },
-        "getsyntaxhelp": {
-            "class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\ApiGetSyntaxHelp",
-            "services": [
-                "ContentHandlerFactory",
-                "DBLoadBalancer",
-                "LinkTargetLookup",
-                "TitleFormatter"
-            ]
-        }
-    },
-    "ContentHandlers": {
-        "markdown": {
-            "class": "MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownContentHandler",
-            "services": [
-                "ParserFactory",
-                "TitleFactory",
-                "UrlUtils"
-            ]
-        }
-    },
-    "ResourceModules": {
-        "ext.minimalexample.syntaxhelp": {
-            "localBasePath": "resources",
-            "remoteExtPath": "MinimalExample/resources",
-            "dependencies": [
-                "mediawiki.api",
-                "mediawiki.jqueryMsg",
-                "mediawiki.Title"
-            ],
-            "styles": [
-                "ext.minimalexample.syntaxhelp.css"
-            ],
-            "packageFiles": [
-                "ext.minimalexample.syntaxhelp.js"
-            ],
-            "messages": [
-                "parentheses",
-                "syntaxhelp-help-label"
-            ]
-        }
-    },
-    "load_composer_autoloader": true,
-    "manifest_version": 2
+	"name": "MinimalExample",
+	"author": [
+		"Daniel Scherzer"
+	],
+	"descriptionmsg": "minimalexample-desc",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.39"
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\MinimalExample\\": "src/"
+	},
+	"MessagesDirs": {
+		"MinimalExample": [
+			"i18n",
+			"i18n/api"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"MinimalExampleAlias": "MinimalExample.alias.php"
+	},
+	"DefaultUserOptions": {
+		"minimalexample-changecontentmodel-pref": true
+	},
+	"AvailableRights": [
+		"syntaxhelp-configure"
+	],
+	"GroupPermissions": {
+		"sysop": {
+			"syntaxhelp-configure": true
+		}
+	},
+	"HookHandlers": {
+		"parser": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\ParserHooks",
+			"services": [
+				"TitleFactory",
+				"UserOptionsLookup"
+			]
+		},
+		"markdown": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownHooks"
+		},
+		"syntaxhelp-schema": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SchemaHooks"
+		},
+		"syntaxhelp-display": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\DisplayHooks"
+		}
+	},
+	"Hooks": {
+		"GetPreferences": "parser",
+		"ParserFirstCallInit": "parser",
+		"SpecialPageBeforeFormDisplay": "parser",
+		"ContentHandlerDefaultModelFor": "markdown",
+		"LoadExtensionSchemaUpdates": "syntaxhelp-schema",
+		"BeforePageDisplay": "syntaxhelp-display"
+	},
+	"SpecialPages": {
+		"DoesUserExist": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\SpecialDoesUserExist",
+			"services": [
+				"UserFactory",
+				"UserIdentityLookup"
+			]
+		},
+		"ConfigureSyntaxHelp": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\SpecialConfigureSyntaxHelp",
+			"services": [
+				"ContentHandlerFactory",
+				"DBLoadBalancer",
+				"LinkTargetLookup",
+				"TitleFormatter"
+			]
+		}
+	},
+	"APIModules": {
+		"doesuserexist": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\ApiDoesUserExist",
+			"services": [
+				"UserFactory",
+				"UserIdentityLookup"
+			]
+		},
+		"getsyntaxhelp": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\ApiGetSyntaxHelp",
+			"services": [
+				"ContentHandlerFactory",
+				"DBLoadBalancer",
+				"LinkTargetLookup",
+				"TitleFormatter"
+			]
+		}
+	},
+	"ContentHandlers": {
+		"markdown": {
+			"class": "MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownContentHandler",
+			"services": [
+				"ParserFactory",
+				"TitleFactory",
+				"UrlUtils"
+			]
+		}
+	},
+	"ResourceModules": {
+		"ext.minimalexample.syntaxhelp": {
+			"localBasePath": "resources",
+			"remoteExtPath": "MinimalExample/resources",
+			"dependencies": [
+				"mediawiki.api",
+				"mediawiki.jqueryMsg",
+				"mediawiki.Title"
+			],
+			"styles": [
+				"ext.minimalexample.syntaxhelp.css"
+			],
+			"packageFiles": [
+				"ext.minimalexample.syntaxhelp.js"
+			],
+			"messages": [
+				"parentheses",
+				"syntaxhelp-help-label"
+			]
+		}
+	},
+	"load_composer_autoloader": true,
+	"manifest_version": 2
 }

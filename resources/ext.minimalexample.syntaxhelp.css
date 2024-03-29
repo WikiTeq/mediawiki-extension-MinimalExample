@@ -1,7 +1,7 @@
 #ext-minimalexample-help-link-wrapper {
-    font-size: medium;
+	font-size: medium;
 }
 
 #ext-minimalexample-help-link-wrapper:before {
-    content: ' ';
+	content: ' ';
 }
