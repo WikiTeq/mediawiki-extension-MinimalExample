@@ -33,7 +33,7 @@ class MarkdownContentHandler extends TextContentHandler {
     /**
      * Like special pages and api modules, content handlers can have
      * dependencies injected.
-     * 
+     *
      * @param string $modelId
      * @param ParserFactory $parserFactory
      * @param TitleFactory $titleFactory
@@ -114,7 +114,7 @@ class MarkdownContentHandler extends TextContentHandler {
             new MWPreprocessedRenderer()
         );
 
-        $parser = new MarkdownParser( $env );        
+        $parser = new MarkdownParser( $env );
         $parsedResult = $parser->parse( $content->getText() );
 
         // For any image that has its source as a valid URL, replace it with
@@ -199,7 +199,7 @@ class MarkdownContentHandler extends TextContentHandler {
                     // Only add valid titles as recorded links
                     $parserOutput->addLink( $title );
                 }
-            } 
+            }
         }
     }
 }
