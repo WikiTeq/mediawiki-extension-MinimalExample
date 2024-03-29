@@ -1,0 +1,72 @@
+!! Version 2
+
+# Do *not* use `functionhooks`, which checks that the extension is loaded, since
+# using that means that the entire file is skipped if the extension is not
+# installed, and then the test script claims to pass. Instead, just assume that
+# the extension is loaded; if it is missing the tests will fail, which is what
+# we want.
+
+!! article
+Page that exists
+!! text
+Wikitext page so that we can verify content model of other pages.
+A ''simple'' template.
+!! endarticle
+
+!! test
+Empty page, current page is wikitext
+!! options
+title=Page_that_exists
+!! wikitext
+{{PAGECONTENTMODEL:}}
+!! html
+<p>wikitext
+</p>
+!! end
+
+!! test
+Parser function is not case sensitive
+!! options
+title=Page_that_exists
+!! wikitext
+{{pagecontentmodel:}}
+!! html
+<p>wikitext
+</p>
+!! end
+
+!! test
+Empty page, current page does not exist
+!! options
+title=ThisShouldNotExist
+!! wikitext
+{{pagecontentmodel:}}
+!! html
+
+!! end
+
+!! test
+Missing page is unknown
+!! wikitext
+{{PAGECONTENTMODEL:ThisShouldNotExist}}
+!! html
+
+!! end
+
+!! test
+Other existing page is known (exact case)
+!! wikitext
+{{PAGECONTENTMODEL:Page that exists}}
+!! html
+<p>wikitext
+</p>
+!! end
+
+!! test
+Other existing page is known (MediaWiki normalizes)
+!! wikitext
+{{PAGECONTENTMODEL:page that exists}}
+!! html
+<p>wikitext
+</p>
+!! end
