@@ -15,6 +15,7 @@ use Title;
  * @covers \MediaWiki\Extension\MinimalExample\ParserHooks
  * @group extension-MinimalExample
  * @group Database
+ * @license MIT
  */
 class ParserHooksTest extends MediaWikiIntegrationTestCase {
 	use MockAuthorityTrait;

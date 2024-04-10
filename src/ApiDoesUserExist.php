@@ -8,6 +8,9 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentityLookup;
 use Wikimedia\ParamValidator\ParamValidator;
 
+/**
+ * @license MIT
+ */
 class ApiDoesUserExist extends ApiBase {
 
 	private UserFactory $userFactory;

@@ -14,6 +14,8 @@ use Wikimedia\Rdbms\ILoadBalancer;
  * Create a page that allows configuring where users can get help with syntax
  * for different content models. Stores the information in the custom table
  * `me_syntaxhelp` that this extension creates.
+ *
+ * @license MIT
  */
 class SpecialConfigureSyntaxHelp extends FormSpecialPage {
 

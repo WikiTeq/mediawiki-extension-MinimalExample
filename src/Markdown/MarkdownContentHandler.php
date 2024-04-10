@@ -23,6 +23,8 @@ use TitleFactory;
 
 /**
  * Content handler to add support for markdown.
+ *
+ * @license MIT
  */
 class MarkdownContentHandler extends TextContentHandler {
 

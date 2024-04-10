@@ -7,6 +7,9 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentityLookup;
 use SpecialPage;
 
+/**
+ * @license MIT
+ */
 class SpecialDoesUserExist extends SpecialPage {
 
 	private UserFactory $userFactory;
