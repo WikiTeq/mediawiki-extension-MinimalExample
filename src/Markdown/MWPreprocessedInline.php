@@ -10,6 +10,8 @@ use League\CommonMark\Node\Inline\AbstractStringContainer;
  * since we trust the MediaWiki renderer. We need a subclass to target the
  * renderer in the environment configuration, but this does not have any
  * actual logic in it.
+ *
+ * @license MIT
  */
 class MWPreprocessedInline extends AbstractStringContainer {
 }

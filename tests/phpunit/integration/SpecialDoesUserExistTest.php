@@ -13,6 +13,7 @@ use User;
  * @covers \MediaWiki\Extension\MinimalExample\SpecialDoesUserExist
  * @group extension-MinimalExample
  * @group Database
+ * @license MIT
  */
 class SpecialDoesUserExistTest extends SpecialPageTestBase {
 	use MockAuthorityTrait;

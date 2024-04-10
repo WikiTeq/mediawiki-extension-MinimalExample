@@ -12,6 +12,8 @@ use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * API module to retrieve the help page associated with a content model.
+ *
+ * @license MIT
  */
 class ApiGetSyntaxHelp extends ApiBase {
 
