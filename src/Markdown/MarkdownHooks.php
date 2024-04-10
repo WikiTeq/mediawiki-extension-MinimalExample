@@ -5,6 +5,9 @@ namespace MediaWiki\Extension\MinimalExample\Markdown;
 use MediaWiki\Revision\Hook\ContentHandlerDefaultModelForHook;
 use Title;
 
+/**
+ * @license MIT
+ */
 class MarkdownHooks implements ContentHandlerDefaultModelForHook {
 
 	/**

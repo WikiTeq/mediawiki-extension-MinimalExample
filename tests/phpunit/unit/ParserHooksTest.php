@@ -15,6 +15,7 @@ use User;
 /**
  * @covers \MediaWiki\Extension\MinimalExample\ParserHooks
  * @group extension-MinimalExample
+ * @license MIT
  */
 class ParserHooksTest extends MediaWikiUnitTestCase {
 

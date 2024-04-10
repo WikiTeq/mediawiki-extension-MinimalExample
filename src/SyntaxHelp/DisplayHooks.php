@@ -6,6 +6,9 @@ use MediaWiki\Hook\BeforePageDisplayHook;
 use OutputPage;
 use Skin;
 
+/**
+ * @license MIT
+ */
 class DisplayHooks implements BeforePageDisplayHook {
 
 	/**

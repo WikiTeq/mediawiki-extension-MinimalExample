@@ -2,6 +2,8 @@
 
 /**
  * Aliases for the MinimalExample extension
+ *
+ * @license MIT
  */
 
 $specialPageAliases = [];

@@ -11,6 +11,9 @@ use Parser;
 use TitleFactory;
 use User;
 
+/**
+ * @license MIT
+ */
 class ParserHooks implements
 	GetPreferencesHook,
 	ParserFirstCallInitHook,

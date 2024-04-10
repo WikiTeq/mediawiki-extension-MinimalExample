@@ -11,6 +11,7 @@ use User;
  * @covers \MediaWiki\Extension\MinimalExample\ApiDoesUserExist
  * @group extension-MinimalExample
  * @group Database
+ * @license MIT
  */
 class ApiDoesUserExistTest extends ApiTestCase {
 	use MockAuthorityTrait;
