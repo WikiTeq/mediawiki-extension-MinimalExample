@@ -6,6 +6,8 @@ use TextContent;
 
 /**
  * Content that should be rendered according to markdown parsing.
+ *
+ * @license MIT
  */
 class MarkdownContent extends TextContent {
 

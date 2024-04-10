@@ -5,6 +5,9 @@ namespace MediaWiki\Extension\MinimalExample\SyntaxHelp;
 use DatabaseUpdater;
 use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 
+/**
+ * @license MIT
+ */
 class SchemaHooks implements LoadExtensionSchemaUpdatesHook {
 
 	/**

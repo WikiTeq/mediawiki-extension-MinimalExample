@@ -11,6 +11,8 @@ use RuntimeException;
  * A renderer for `MWPreprocessedInline` nodes, where we actually did the
  * processing earlier and now just need to provide the raw HTML without it
  * getting escaped. There does not appear to be an existing renderer for this.
+ *
+ * @license MIT
  */
 class MWPreprocessedRenderer implements NodeRendererInterface {
 
