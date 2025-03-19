@@ -2,6 +2,6 @@
 	font-size: medium;
 }
 
-#ext-minimalexample-help-link-wrapper:before {
+#ext-minimalexample-help-link-wrapper::before {
 	content: ' ';
 }
