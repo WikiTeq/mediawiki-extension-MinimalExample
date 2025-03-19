@@ -26,3 +26,6 @@ set to include the dependencies from MinimalExample, e.g. with
 
 and then run `composer update` or `composer update --no-dev` to install the
 dependencies.
+
+* Run the update script to create SQL tables used by MinimalExample, e.g. with
+`php maintenance/update.php`.
