@@ -81,7 +81,7 @@ class ApiDoesUserExist extends ApiBase {
      *  - normalized: string (only set if the user exists and the
      *    requested name is different from the normalized name)
      *  - hidden: boolean (only set if the user exists)
-     * 
+     *
      * @param string $usernameToCheck
      * @return array
      */
@@ -119,6 +119,7 @@ class ApiDoesUserExist extends ApiBase {
         return $result;
     }
 
+    /** @inheritDoc */
     public function getAllowedParams() {
         return [
             'username' => [
@@ -137,6 +138,7 @@ class ApiDoesUserExist extends ApiBase {
         ];
     }
 
+    /** @inheritDoc */
     protected function getExamplesMessages() {
         return [
             'action=doesuserexist&username=MediaWiki default'
