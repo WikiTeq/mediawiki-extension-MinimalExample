@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <ruleset>
 	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
-		<!-- Will be fixed in a subsequent commit -->
-		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
 		<!--
 			Until version 41.0.0 of mediawiki/mediawiki-codesniffer typed
 			properties still needed documentation blocks for this sniff to
