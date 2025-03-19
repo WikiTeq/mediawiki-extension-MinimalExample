@@ -5,6 +5,8 @@
 
 /**
  * Get a promise with the help page for the current page's content model
+ *
+ * @return {jQuery.Promise}
  */
 const getHelpPage = () => {
 	const currentModel = mw.config.get( 'wgPageContentModel' );
@@ -22,6 +24,9 @@ const getHelpPage = () => {
 /**
  * Given a page title to link to for the help page, get an element for the link
  * to that page
+ *
+ * @param {string} pageName
+ * @return {jQuery}
  */
 const makePageLink = ( pageName ) => {
 	const pageTitle = new mw.Title( pageName );
@@ -31,8 +36,8 @@ const makePageLink = ( pageName ) => {
 	const $link = $( '<a>' )
 		.attr( 'href', pageTitle.getUrl() )
 		.attr( 'target', '_blank' )
-		.text( mw.msg( 'syntaxhelp-help-label') );
-	
+		.text( mw.msg( 'syntaxhelp-help-label' ) );
+
 	// the `mediawiki.jqueryMsg` module lets us use jQuery elements as message
 	// parameters so that the overall link can be in parentheses that are
 	// localized properly; use parseDom() so that we also get a jQuery element
@@ -56,6 +61,8 @@ const maybeAddHelpLink = () => {
 			return;
 		}
 		const $link = makePageLink( result.page );
+		// Should only exist once
+		// eslint-disable-next-line no-jquery/no-global-selector
 		const $target = $( '#firstHeading' );
 		$target.append( $link );
 	} );

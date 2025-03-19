@@ -1,0 +1,16 @@
+{
+	"name": "MinimalExample",
+	"private": true,
+	"scripts": {
+		"test": "npm run lint && npm run banana",
+		"lint": "npm run lint:styles && npm run lint:js",
+		"lint:js": "eslint .",
+		"lint:styles": "stylelint resources/**/*.{vue,less,css}",
+		"banana": "npx grunt-banana-checker i18n/"
+	},
+	"devDependencies": {
+		"grunt-banana-checker": "0.13.0",
+		"stylelint-config-wikimedia": "0.18.0",
+		"eslint-config-wikimedia": "0.29.1"
+	}
+}
