@@ -1,3 +1,5 @@
 # Ignore composer-generated files
 /vendor/
 /composer.lock
+# Ignore NPM-generated files, but keep the lock file
+/node_modules/
