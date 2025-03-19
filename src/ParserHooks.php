@@ -46,8 +46,10 @@ class ParserHooks implements ParserFirstCallInitHook {
      * ignore any subsequent parameters.
      * 
      * - If the page name is empty, we will use the page currently being parsed;
-     * since parser functions are used for wikitext we can just assume that the
-     * content model is wikitext and avoid an expensive database lookup.
+     * even though parser functions are only used for wikitext, other content
+     * models (like MassMessage's MassMessageListContent) can include wikitext,
+     * so we still need to check the content model, but since the title object
+     * is already known, the check is not considered "expensive".
      * 
      * - Since looking up a page content model is an "expensive" operation in
      * the sense that it generally requires a database lookup, we will mark this
@@ -68,21 +70,21 @@ class ParserHooks implements ParserFirstCallInitHook {
         // Allow retrieving the current page content model without counting it
         // as an expensive operation, because it isn't.
         if ( $pagename === '' ) {
-            return CONTENT_MODEL_WIKITEXT;
-        }
+            $title = $parser->getTitle();
+        } else {
+            // But creating a Title object is going to be expensive; only do so if
+            // the limit on expensive operations has not been reached yet.
+            if ( !$parser->incrementExpensiveFunctionCount() ) {
+                // `false` if the limit has been exceeded, in which case we don't
+                // check and just return an empty string
+                return '';
+            }
 
-        // But creating a Title object is going to be expensive; only do so if
-        // the limit on expensive operations has not been reached yet.
-        if ( !$parser->incrementExpensiveFunctionCount() ) {
-            // `false` if the limit has been exceeded, in which case we don't
-            // check and just return an empty string
-            return '';
-        }
-
-        $title = $this->titleFactory->newFromText( $pagename );
-        if ( !$title ) {
-            // Invalid page name
-            return '';
+            $title = $this->titleFactory->newFromText( $pagename );
+            if ( !$title ) {
+                // Invalid page name
+                return '';
+            }
         }
 
         if ( !$title->exists() ) {
