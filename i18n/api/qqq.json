@@ -15,5 +15,10 @@
 	"apihelp-getsyntaxhelp-param-contentmodel": "{{doc-apihelp-param|getsyntaxhelp|contentmodel}}",
 	"apihelp-getsyntaxhelp-example-wikitext": "{{doc-apihelp-example|getsyntaxhelp}}",
 	"apihelp-getsyntaxhelp-example-unknown": "{{doc-apihelp-example|getsyntaxhelp}}",
-	"apihelp-getsyntaxhelp-example-invalid": "{{doc-apihelp-example|getsyntaxhelp}}"
+	"apihelp-getsyntaxhelp-example-invalid": "{{doc-apihelp-example|getsyntaxhelp}}",
+	"apihelp-setextradetails-summary": "{{doc-apihelp-summary|setextradetails}}",
+	"apihelp-setextradetails-param-title": "{{doc-apihelp-param|setextradetails|title}}",
+	"apihelp-setextradetails-param-text": "{{doc-apihelp-param|setextradetails|text}}",
+	"apihelp-setextradetails-param-summary": "{{doc-apihelp-param|setextradetails|summary}}",
+	"apierror-setextradetails-not-wikitext": "{{doc-apierror}}\n\nParameters:\n* $1 - content model of the extra details slot"
 }
