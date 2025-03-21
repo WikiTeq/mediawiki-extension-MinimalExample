@@ -48,6 +48,9 @@
 		},
 		"syntaxhelp-display": {
 			"class": "\\MediaWiki\\Extension\\MinimalExample\\SyntaxHelp\\DisplayHooks"
+		},
+		"extra-details-slot": {
+			"class": "\\MediaWiki\\Extension\\MinimalExample\\ExtraDetails\\SlotRegistrationHandler"
 		}
 	},
 	"Hooks": {
@@ -56,7 +59,8 @@
 		"SpecialPageBeforeFormDisplay": "parser",
 		"ContentHandlerDefaultModelFor": "markdown",
 		"LoadExtensionSchemaUpdates": "syntaxhelp-schema",
-		"BeforePageDisplay": "syntaxhelp-display"
+		"BeforePageDisplay": "syntaxhelp-display",
+		"MediaWikiServices": "extra-details-slot"
 	},
 	"SpecialPages": {
 		"DoesUserExist": {
