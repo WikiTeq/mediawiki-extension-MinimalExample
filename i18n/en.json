@@ -21,5 +21,8 @@
 	"doesuserexist-does-not-exist": "No user with the name `$1` exists.",
 	"doesuserexist-exists-exact": "A user exists with the name `$1`.",
 	"doesuserexist-exists-normalized": "A user exists with the name `$1` which is the normalized form of `$2`.",
-	"doesuserexist-exists-hidden": "'''Note''': this user account is suppressed, and is hidden from non-privileged viewers."
+	"doesuserexist-exists-hidden": "'''Note''': this user account is suppressed, and is hidden from non-privileged viewers.",
+	"right-edit-extra-details": "Edit extra details of pages",
+	"action-edit-extra-details": "edit extra details of pages",
+	"extradetails-render-not-wikitext": "The extra details slot is expected to have wikitext, found $1"
 }

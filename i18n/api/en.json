@@ -15,5 +15,10 @@
 	"apihelp-getsyntaxhelp-param-contentmodel": "The content model to get a help page for",
 	"apihelp-getsyntaxhelp-example-wikitext": "Get the help page for <kbd>wikitext</kbd>, which is commonly configured.",
 	"apihelp-getsyntaxhelp-example-unknown": "Get the help page for <kbd>unknown</kbd>, which is unlikely to be configured.",
-	"apihelp-getsyntaxhelp-example-invalid": "Try to get the help page for <kbd>invalid</kbd>, which should fail since that is unlikely to be a valid content model."
+	"apihelp-getsyntaxhelp-example-invalid": "Try to get the help page for <kbd>invalid</kbd>, which should fail since that is unlikely to be a valid content model.",
+	"apihelp-setextradetails-summary": "Set or remove extra details from a page",
+	"apihelp-setextradetails-param-title": "Target page",
+	"apihelp-setextradetails-param-text": "Extra details, use an empty string to remove [REQUIRED]",
+	"apihelp-setextradetails-param-summary": "Edit summary",
+	"apierror-setextradetails-not-wikitext": "The extra details slot is expected to have wikitext, found $1"
 }
