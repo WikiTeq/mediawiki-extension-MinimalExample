@@ -1,0 +1,26 @@
+# Heading 1
+## and 2
+### and 3
+#### and 4
+##### and 5
+###### and 6
+
+This is **bold** text
+
+This is __also bold__ text
+
+This is *italic* text
+
+This is _also italic_ text
+----------
+<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><h1>Heading 1</h1>
+<h2>and 2</h2>
+<h3>and 3</h3>
+<h4>and 4</h4>
+<h5>and 5</h5>
+<h6>and 6</h6>
+<p>This is <strong>bold</strong> text</p>
+<p>This is <strong>also bold</strong> text</p>
+<p>This is <em>italic</em> text</p>
+<p>This is <em>also italic</em> text</p>
+</div>

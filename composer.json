@@ -4,7 +4,7 @@
 		"league/commonmark": "2.7.1"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "38.0.0",
+		"mediawiki/mediawiki-codesniffer": "48.0.0 || 38.0.0",
 		"mediawiki/mediawiki-phan-config": "0.12.1"
 	},
 	"scripts": {
@@ -13,5 +13,10 @@
 		],
 		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -sp --cache"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }

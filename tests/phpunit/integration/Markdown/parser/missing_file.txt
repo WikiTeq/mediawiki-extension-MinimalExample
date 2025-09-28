@@ -1,0 +1,7 @@
+![Existing file](missing.jpg)
+----------
+<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p><span class="mw-default-size" typeof="mw:Error mw:File"><a href="/index.php?title=Special:Upload&amp;wpDestFile=Missing.jpg" class="new" title="File:Missing.jpg"><span class="mw-file-element mw-broken-media">File:Missing.jpg</span></a></span></p>
+</div>
+----------
+[category] link=14:Pages_with_broken_file_links sort=''
+[image] link=6:Missing.jpg

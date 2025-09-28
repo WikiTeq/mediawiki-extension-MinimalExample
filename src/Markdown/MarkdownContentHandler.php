@@ -12,7 +12,10 @@ use League\CommonMark\Node\Query;
 use League\CommonMark\Parser\MarkdownParser;
 use League\CommonMark\Renderer\HtmlRenderer;
 use League\CommonMark\Util\RegexHelper;
+use MediaWiki\Config\Config;
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Content\Renderer\ContentParseParams;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Utils\UrlUtils;
 use Parser;
 use ParserFactory;
@@ -28,21 +31,28 @@ use TitleFactory;
  */
 class MarkdownContentHandler extends TextContentHandler {
 
+	private ServiceOptions $options;
 	private ParserFactory $parserFactory;
 	private TitleFactory $titleFactory;
 	private UrlUtils $urlUtils;
+
+	private const CONSTRUCTOR_OPTIONS = [
+		MainConfigNames::LegalTitleChars,
+	];
 
 	/**
 	 * Like special pages and api modules, content handlers can have
 	 * dependencies injected.
 	 *
 	 * @param string $modelId
+	 * @param Config $config
 	 * @param ParserFactory $parserFactory
 	 * @param TitleFactory $titleFactory
 	 * @param UrlUtils $urlUtils
 	 */
 	public function __construct(
 		string $modelId,
+		Config $config,
 		ParserFactory $parserFactory,
 		TitleFactory $titleFactory,
 		UrlUtils $urlUtils
@@ -50,6 +60,9 @@ class MarkdownContentHandler extends TextContentHandler {
 		// The model id should always be 'markdown' since extending this class
 		// is not supported
 		parent::__construct( MarkdownContent::CONTENT_MODEL );
+		$options = new ServiceOptions( self::CONSTRUCTOR_OPTIONS, $config );
+		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
+		$this->options = $options;
 		$this->parserFactory = $parserFactory;
 		$this->titleFactory = $titleFactory;
 		$this->urlUtils = $urlUtils;
@@ -116,6 +129,19 @@ class MarkdownContentHandler extends TextContentHandler {
 			new MWPreprocessedRenderer()
 		);
 
+		// Category support
+		$categoryTracker = new MWCategoryTracker();
+		$env->addInlineParser(
+			new MWCategoryParser(
+				$this->options->get( MainConfigNames::LegalTitleChars ),
+				$categoryTracker
+			),
+			// Higher priority than the existing parsers
+			// - CloseBracketParser matches ], priority 30
+			// - OpenBracketParser matches [, priority 20
+			40
+		);
+
 		$parser = new MarkdownParser( $env );
 
 		// We know that `$content` will be an instance of `MarkdownContent`,
@@ -164,10 +190,7 @@ class MarkdownContentHandler extends TextContentHandler {
 				)
 			);
 			// Register that the page uses the image, like we do for links
-			// lower down, but don't copy the data about broken images to, since
-			// we don't have support for other categories at this point and it
-			// would just be confusing.
-			$mwParsedImageOut->setCategories( [] );
+			// lower down
 			$parserOutput->mergeTrackingMetaDataFrom( $mwParsedImageOut );
 		}
 
@@ -218,5 +241,7 @@ class MarkdownContentHandler extends TextContentHandler {
 				}
 			}
 		}
+
+		$categoryTracker->exportToMediaWiki( $parserOutput );
 	}
 }

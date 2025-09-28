@@ -1,0 +1,6 @@
+![Existing file](example.jpg)
+----------
+<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p><span class="mw-default-size" typeof="mw:File"><a href="/wiki/File:Example.jpg" class="mw-file-description"><img src="/images/a/a9/Example.jpg" decoding="async" width="172" height="178" class="mw-file-element" /></a></span></p>
+</div>
+----------
+[image] link=6:Example.jpg

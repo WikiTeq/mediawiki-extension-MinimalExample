@@ -1,0 +1,14 @@
+# Text should be with LF line endings
+*.yml text eol=lf
+*.php text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.sql text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.md text eol=lf
+.eslintignore text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf
+COPYING text eol=lf

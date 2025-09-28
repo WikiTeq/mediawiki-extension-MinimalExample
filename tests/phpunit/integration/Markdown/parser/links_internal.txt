@@ -1,0 +1,10 @@
+[Display](./Exists)
+
+[Display](./Missing)
+----------
+<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p><a href="./Exists">Display</a></p>
+<p><a href="./Missing">Display</a></p>
+</div>
+----------
+[local] link=0:Exists
+[local] link=0:Missing

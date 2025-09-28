@@ -120,6 +120,7 @@
 		"markdown": {
 			"class": "MediaWiki\\Extension\\MinimalExample\\Markdown\\MarkdownContentHandler",
 			"services": [
+				"MainConfig",
 				"ParserFactory",
 				"TitleFactory",
 				"UrlUtils"

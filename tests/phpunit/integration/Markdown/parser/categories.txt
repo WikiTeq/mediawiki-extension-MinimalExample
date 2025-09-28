@@ -1,0 +1,14 @@
+[[Category:Foo]]
+[[Category:Bar| ]]
+[[Category:Baz|gets replaced]]
+[[Category:Baz|Qux]]
+----------
+<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p>
+
+
+</p>
+</div>
+----------
+[category] link=14:Foo sort=''
+[category] link=14:Bar sort=' '
+[category] link=14:Baz sort='Qux'
