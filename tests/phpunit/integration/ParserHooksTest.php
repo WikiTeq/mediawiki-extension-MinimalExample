@@ -68,11 +68,11 @@ class ParserHooksTest extends MediaWikiIntegrationTestCase {
 		$ctx->setAuthority( $this->mockRegisteredUltimateAuthority() );
 		$ctx->setTitle( $contentModelChangePage->getPageTitle() );
 		$contentModelChangePage->setContext( $ctx );
+		$output = $contentModelChangePage->getOutput();
+		$output->setTitle( $ctx->getTitle() );
 
 		$contentModelChangePage->execute( '' );
 
-		$output = $contentModelChangePage->getOutput();
-		$output->setTitle( $ctx->getTitle() );
 		$outputHTML = $output->output( true );
 
 		if ( $showNote ) {
