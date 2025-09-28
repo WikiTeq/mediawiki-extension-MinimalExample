@@ -196,7 +196,7 @@ class MarkdownContentHandler extends TextContentHandler {
 
 		$renderer = new HtmlRenderer( $env );
 		$parserOutput->setText(
-			$renderer->renderDocument( $parsedResult )
+			(string)( $renderer->renderDocument( $parsedResult ) )
 		);
 		// Make sure we have link styles, etc.
 		$parserOutput->addWrapperDivClass( 'mw-parser-output' );
@@ -235,10 +235,12 @@ class MarkdownContentHandler extends TextContentHandler {
 					continue;
 				}
 				$title = $this->titleFactory->newFromText( $url );
-				if ( $title !== null ) {
-					// Only add valid titles as recorded links
-					$parserOutput->addLink( $title );
+				if ( $title === null ) {
+					continue;
 				}
+				// Only add valid titles as recorded links
+				$parserOutput->addLink( $title );
+				
 			}
 		}
 
