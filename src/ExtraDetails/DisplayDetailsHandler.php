@@ -46,6 +46,9 @@ class DisplayDetailsHandler implements BeforePageDisplayHook {
 		}
 		$page = $out->getWikiPage();
 		$revision = $page->getRevisionRecord();
+		if ( !$revision ) {
+			return;
+		}
 		if ( !$revision->hasSlot( SlotRegistrationHandler::EXTRA_DETAILS_ROLE ) ) {
 			return;
 		}
