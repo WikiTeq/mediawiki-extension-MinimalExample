@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\MinimalExample\Markdown;
 
+use Config;
 use Content;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
@@ -12,7 +13,6 @@ use League\CommonMark\Node\Query;
 use League\CommonMark\Parser\MarkdownParser;
 use League\CommonMark\Renderer\HtmlRenderer;
 use League\CommonMark\Util\RegexHelper;
-use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\MainConfigNames;
@@ -240,7 +240,6 @@ class MarkdownContentHandler extends TextContentHandler {
 				}
 				// Only add valid titles as recorded links
 				$parserOutput->addLink( $title );
-				
 			}
 		}
 

@@ -3,17 +3,18 @@
 namespace MediaWiki\Extension\MinimalExample\Tests\Integration\Markdown;
 
 use FilesystemIterator;
+use FSFileBackend;
 use GlobIterator;
 use LocalFile;
 use LocalRepo;
 use MediaWiki\Extension\MinimalExample\Markdown\MarkdownContent;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Page\PageReferenceValue;
-use MediaWiki\Parser\ParserOptions;
-use MediaWiki\Parser\ParserOutput;
-use MediaWiki\WikiMap\WikiMap;
 use MediaWikiIntegrationTestCase;
+use ParserOptions;
+use ParserOutput;
 use Title;
-use Wikimedia\FileBackend\FSFileBackend;
+use WikiMap;
 
 /**
  * Parser tests for markdown, cannot use MediaWiki's parser test system because
@@ -75,11 +76,15 @@ class MarkdownParserTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideCases
 	 */
 	public function testMarkdownParser( string $filename ) {
+		$this->overrideConfigValues( [
+			MainConfigNames::LanguageCode => 'en',
+			MainConfigNames::EnableUploads => true,
+		] );
 		$this->assertFileExists( $filename );
 		$contents = file_get_contents( $filename );
 		$parts = explode( "----------", $contents );
 		if ( count( $parts ) === 2 ) {
-			[ markdown, $expectedHtml ] = $parts;
+			[ $markdown, $expectedHtml ] = $parts;
 			$expectedMetadata = '';
 		} else {
 			$this->assertCount( 3, $parts );
@@ -94,7 +99,11 @@ class MarkdownParserTest extends MediaWikiIntegrationTestCase {
 			$page
 		);
 		$parserOptions = ParserOptions::newFromAnon();
-		$html = $parserOutput->runOutputPipeline( $parserOptions )->getContentHolderText();
+		if ( method_exists( $parserOutput, 'runOutputPipeline' ) ) {
+			$html = $parserOutput->runOutputPipeline( $parserOptions )->getContentHolderText();
+		} else {
+			$html = $parserOutput->getText();
+		}
 		$this->assertSame( trim( $expectedHtml ), trim( $html ) );
 
 		$this->assertSame(
