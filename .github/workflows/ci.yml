@@ -17,8 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4' ]
-        mediawiki: [ REL1_39 ]
+        php: [ '8.1', '8.3' ]
+        mediawiki: [ REL1_43 ]
     steps:
       - name: Setup Extension
         uses: actions/checkout@v3
@@ -56,12 +56,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mediawiki: [ REL1_39 ]
+        mediawiki: [ REL1_43 ]
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           extensions: mbstring, intl, ast
           coverage: none
           tools: composer
@@ -80,7 +80,7 @@ jobs:
           composer update
           composer update
       - name: Phan
-        run: ./vendor/bin/phan -d extensions/${{ env.EXTNAME }} --minimum-target-php-version=7.4 --long-progress-bar
+        run: ./vendor/bin/phan -d extensions/${{ env.EXTNAME }} --minimum-target-php-version=8.1 --long-progress-bar
 
   style-js:
     name: Code Style (JS+styles)
