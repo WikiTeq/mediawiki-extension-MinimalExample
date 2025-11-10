@@ -1,9 +1,11 @@
+Text
 [[Category:Foo]]
 [[Category:Bar| ]]
 [[Category:Baz|gets replaced]]
 [[Category:Baz|Qux]]
 ----------
-<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p>
+<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p>Text
+
 
 
 </p>
