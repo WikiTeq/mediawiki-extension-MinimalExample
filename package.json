@@ -2,6 +2,7 @@
 	"name": "MarkdownPages",
 	"private": true,
 	"scripts": {
+		"test": "npm run banana",
 		"banana": "npx grunt-banana-checker i18n/"
 	},
 	"devDependencies": {
