@@ -1,8 +1,8 @@
 <?php
 
-namespace MediaWiki\Extension\MinimalExample\Tests\Integration\Markdown;
+namespace MediaWiki\Extension\MarkdownPages\Tests\Integration;
 
-use MediaWiki\Extension\MinimalExample\Markdown\MarkdownContent;
+use MediaWiki\Extension\MarkdownPages\MarkdownContent;
 use MediaWiki\MainConfigNames;
 use MediaWiki\MainConfigSchema;
 use MediaWiki\Page\PageReferenceValue;
@@ -15,9 +15,9 @@ use ParserOptions;
  * Parser tests for markdown, cannot use MediaWiki's parser test system because
  * that only supports tests being wikitext
  *
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MarkdownContent
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MarkdownContentHandler
- * @group extension-MinimalExample
+ * @covers \MediaWiki\Extension\MarkdownPages\MarkdownContent
+ * @covers \MediaWiki\Extension\MarkdownPages\MarkdownContentHandler
+ * @group extension-MarkdownPages
  * @group Database
  * @license MIT
  */

@@ -1,13 +1,13 @@
 <?php
 
-namespace MediaWiki\Extension\MinimalExample\Tests\Integration\Markdown;
+namespace MediaWiki\Extension\MarkdownPages\Tests\Integration;
 
 use FilesystemIterator;
 use FSFileBackend;
 use GlobIterator;
 use LocalFile;
 use LocalRepo;
-use MediaWiki\Extension\MinimalExample\Markdown\MarkdownContent;
+use MediaWiki\Extension\MarkdownPages\MarkdownContent;
 use MediaWiki\MainConfigNames;
 use MediaWiki\Page\PageReferenceValue;
 use MediaWikiIntegrationTestCase;
@@ -20,13 +20,13 @@ use WikiMap;
  * Parser tests for markdown, cannot use MediaWiki's parser test system because
  * that only supports tests being wikitext
  *
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MarkdownContent
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MarkdownContentHandler
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MWCategoryParser
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MWCategoryTracker
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MWPreprocessedInline
- * @covers \MediaWiki\Extension\MinimalExample\Markdown\MWPreprocessedRenderer
- * @group extension-MinimalExample
+ * @covers \MediaWiki\Extension\MarkdownPages\MarkdownContent
+ * @covers \MediaWiki\Extension\MarkdownPages\MarkdownContentHandler
+ * @covers \MediaWiki\Extension\MarkdownPages\MWCategoryParser
+ * @covers \MediaWiki\Extension\MarkdownPages\MWCategoryTracker
+ * @covers \MediaWiki\Extension\MarkdownPages\MWPreprocessedInline
+ * @covers \MediaWiki\Extension\MarkdownPages\MWPreprocessedRenderer
+ * @group extension-MarkdownPages
  * @group Database
  * @license MIT
  */
@@ -46,7 +46,7 @@ class MarkdownParserTest extends MediaWikiIntegrationTestCase {
 		);
 		$title = Title::makeTitle( NS_FILE, 'Example.jpg' );
 		$file = new LocalFile( $title, $repo );
-		$path = dirname( __FILE__, 4 ) . '/data/Example.jpg';
+		$path = dirname( __FILE__, 3 ) . '/data/Example.jpg';
 		$status = $file->upload(
 			$path,
 			'comment',

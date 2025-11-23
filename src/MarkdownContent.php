@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extension\MinimalExample\Markdown;
+namespace MediaWiki\Extension\MarkdownPages;
 
 use TextContent;
 

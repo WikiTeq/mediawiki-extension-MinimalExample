@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extension\MinimalExample\Markdown;
+namespace MediaWiki\Extension\MarkdownPages;
 
 use League\CommonMark\Node\Node;
 use League\CommonMark\Renderer\ChildNodeRendererInterface;
