@@ -12,8 +12,6 @@ use ParserOptions;
 /**
  * Tests that the markdown content handler has the same definition of external
  * links as the wikitext parser
- * Parser tests for markdown, cannot use MediaWiki's parser test system because
- * that only supports tests being wikitext
  *
  * @covers \MediaWiki\Extension\MarkdownPages\MarkdownContent
  * @covers \MediaWiki\Extension\MarkdownPages\MarkdownContentHandler
@@ -63,7 +61,7 @@ class ExternalLinksTest extends MediaWikiIntegrationTestCase {
 	}
 
 	public function testAllProtocols() {
-		// Make sure we run with the detaults so that we have a reasonable
+		// Make sure we run with the defaults so that we have a reasonable
 		// set of cases
 		$protocols = MainConfigSchema::UrlProtocols['default'];
 		$this->overrideConfigValue( MainConfigNames::UrlProtocols, $protocols );

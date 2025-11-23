@@ -99,11 +99,7 @@ class MarkdownParserTest extends MediaWikiIntegrationTestCase {
 			$page
 		);
 		$parserOptions = ParserOptions::newFromAnon();
-		if ( method_exists( $parserOutput, 'runOutputPipeline' ) ) {
-			$html = $parserOutput->runOutputPipeline( $parserOptions )->getContentHolderText();
-		} else {
-			$html = $parserOutput->getText();
-		}
+		$html = $parserOutput->runOutputPipeline( $parserOptions )->getContentHolderText();
 		$this->assertSame( trim( $expectedHtml ), trim( $html ) );
 
 		$this->assertSame(

@@ -41,9 +41,6 @@ class MarkdownContentHandler extends TextContentHandler {
 	];
 
 	/**
-	 * Like special pages and api modules, content handlers can have
-	 * dependencies injected.
-	 *
 	 * @param string $modelId
 	 * @param Config $config
 	 * @param ParserFactory $parserFactory
