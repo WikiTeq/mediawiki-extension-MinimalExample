@@ -213,7 +213,7 @@ class MarkdownContentHandler extends TextContentHandler {
 			// Skip unsafe links since the renderer will skip those too; use
 			// same implementation as the renderer does, see the
 			// ...\Extension\CommonMark\Renderer\Inline\LinkRenderer::render()
-			// implementation as of version 2.4.2
+			// implementation as of version 2.7.1
 			if ( $url === '' || RegexHelper::isLinkPotentiallyUnsafe( $url ) ) {
 				continue;
 			}
