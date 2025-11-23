@@ -21,7 +21,7 @@ jobs:
         mediawiki: [ REL1_43 ]
     steps:
       - name: Setup Extension
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Mediawiki PHPUnit
         uses: wikiteq/mediawiki-phpunit-action@master
         with:
@@ -42,7 +42,7 @@ jobs:
           coverage: none
           tools: composer, phpcs, phplint
       - name: Setup Extension
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Setup Composer
         run: composer update
       - name: Lint
@@ -66,12 +66,12 @@ jobs:
           coverage: none
           tools: composer
       - name: Setup MediaWiki
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           repository: wikimedia/mediawiki
           ref: ${{ matrix.mediawiki }}
       - name: Setup Extension
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           path: extensions/${{ env.EXTNAME }}
       - name: Setup Composer
@@ -87,11 +87,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
       - name: Setup Extension
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Install dependencies
         run: npm ci
       - name: Run tests
