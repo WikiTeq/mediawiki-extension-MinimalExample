@@ -82,8 +82,8 @@ jobs:
       - name: Phan
         run: ./vendor/bin/phan -d extensions/${{ env.EXTNAME }} --minimum-target-php-version=8.1 --long-progress-bar
 
-  style-js:
-    name: Code Style (JS+styles)
+  tests-npm:
+    name: Banana tests
     runs-on: ubuntu-latest
     steps:
       - name: Setup node
