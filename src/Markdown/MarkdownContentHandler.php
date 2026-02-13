@@ -147,10 +147,17 @@ class MarkdownContentHandler extends TextContentHandler {
 				$image->setUrl( '' );
 				continue;
 			}
+			// Validate as a File-namespace title to prevent wikitext injection
+			// (e.g. URL containing ]] would break out of [[File:...]]).
+			$fileTitle = $this->titleFactory->newFromText( $url, \NS_FILE );
+			if ( $fileTitle === null || !$fileTitle->inNamespace( \NS_FILE ) ) {
+				$image->setUrl( '' );
+				continue;
+			}
 			// Otherwise, render the image with MediaWiki, and then replace the
 			// `Image` node with our own `MWPreprocessedInline` type.
 			$mwParsedImageOut = $mwParser->parse(
-				'[[File:' . $url . ']]',
+				'[[File:' . $fileTitle->getDBkey() . ']]',
 				$cpoParams->getPage(),
 				ParserOptions::newFromAnon(),
 				true,
