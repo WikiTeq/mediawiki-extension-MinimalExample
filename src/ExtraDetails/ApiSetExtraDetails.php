@@ -115,7 +115,7 @@ class ApiSetExtraDetails extends ApiBase {
 	 */
 	private function getCurrentSlotContent( WikiPage $page ): string {
 		$revision = $page->getRevisionRecord();
-		if ( !$revision->hasSlot( SlotRegistrationHandler::EXTRA_DETAILS_ROLE ) ) {
+		if ( $revision === null || !$revision->hasSlot( SlotRegistrationHandler::EXTRA_DETAILS_ROLE ) ) {
 			return '';
 		}
 		$content = $revision->getContent( SlotRegistrationHandler::EXTRA_DETAILS_ROLE );

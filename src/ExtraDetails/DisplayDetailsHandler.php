@@ -46,11 +46,11 @@ class DisplayDetailsHandler implements BeforePageDisplayHook {
 		}
 		$page = $out->getWikiPage();
 		$revision = $page->getRevisionRecord();
-		if ( !$revision->hasSlot( SlotRegistrationHandler::EXTRA_DETAILS_ROLE ) ) {
+		if ( $revision === null || !$revision->hasSlot( SlotRegistrationHandler::EXTRA_DETAILS_ROLE ) ) {
 			return;
 		}
 		$content = $revision->getContent( SlotRegistrationHandler::EXTRA_DETAILS_ROLE );
-		if ( !$content instanceof WikiTextContent ) {
+		if ( !$content instanceof WikitextContent ) {
 			$out->prependHTML(
 				Html::errorBox(
 					$out->msg( 'extradetails-render-not-wikitext' )
