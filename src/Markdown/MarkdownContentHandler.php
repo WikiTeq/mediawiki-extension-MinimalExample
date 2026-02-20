@@ -120,6 +120,13 @@ class MarkdownContentHandler extends TextContentHandler {
 		);
 
 		$parser = new MarkdownParser( $env );
+
+		// We know that `$content` will be an instance of `MarkdownContent`,
+		// which extends `TextContent` and thus has a ->getText() method, but
+		// Phan thinks it could just be any object that implements the
+		// `Content` interface, which does not provide ->getText().
+		'@phan-var MarkdownContent $content';
+
 		$parsedResult = $parser->parse( $content->getText() );
 
 		// For any image that has its source as a valid URL, replace it with
@@ -132,6 +139,10 @@ class MarkdownContentHandler extends TextContentHandler {
 			->findAll( $parsedResult );
 		$mwParser = $this->parserFactory->getInstance();
 		foreach ( $allImages as $image ) {
+			// Each image is an instance of the `Image` class, tell Phan so that
+			// it knows about ->getUrl() and ->setUrl().
+			'@phan-var Image $image';
+
 			$url = $image->getUrl();
 			// For any external image, just stop the rendering
 			$parsedUrl = parse_url( $url );
@@ -177,6 +188,10 @@ class MarkdownContentHandler extends TextContentHandler {
 			->where( Query::type( Link::class ) )
 			->findAll( $parsedResult );
 		foreach ( $allLinks as $link ) {
+			// Each link is an instance of the `Link` class, tell Phan so that
+			// it knows about ->getUrl().
+			'@phan-var Link $link';
+
 			$originalUrl = $link->getUrl();
 			if ( $originalUrl === '' ) {
 				continue;
@@ -227,7 +242,7 @@ class MarkdownContentHandler extends TextContentHandler {
 			}
 		}
 		$parserOutput->setText(
-			$renderer->renderDocument( $parsedResult )
+			(string)$renderer->renderDocument( $parsedResult )
 		);
 		// Make sure we have link styles, etc.
 		$parserOutput->addWrapperDivClass( 'mw-parser-output' );
