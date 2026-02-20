@@ -14,19 +14,19 @@ use RuntimeException;
  */
 class MWPreprocessedRenderer implements NodeRendererInterface {
 
-    /**
-     * Render the node, which must be an instance of `MWPreprocessedInline`.
-     *
-     * @param Node $node
-     * @param ChildNodeRendererInterface $childRenderer
-     * @return string The HTML to render
-     */
-    public function render( Node $node, ChildNodeRendererInterface $childRenderer ) {
-        if ( !( $node instanceof MWPreprocessedInline ) ) {
-            throw new RuntimeException(
-                'MWImageRenderer used with ' . get_class( $node )
-            );
-        }
-        return $node->getLiteral();
-    }
+	/**
+	 * Render the node, which must be an instance of `MWPreprocessedInline`.
+	 *
+	 * @param Node $node
+	 * @param ChildNodeRendererInterface $childRenderer
+	 * @return string The HTML to render
+	 */
+	public function render( Node $node, ChildNodeRendererInterface $childRenderer ) {
+		if ( !( $node instanceof MWPreprocessedInline ) ) {
+			throw new RuntimeException(
+				'MWImageRenderer used with ' . get_class( $node )
+			);
+		}
+		return $node->getLiteral();
+	}
 }
