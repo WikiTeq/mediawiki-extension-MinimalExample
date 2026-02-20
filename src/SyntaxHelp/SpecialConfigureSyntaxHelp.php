@@ -17,209 +17,209 @@ use Wikimedia\Rdbms\ILoadBalancer;
  */
 class SpecialConfigureSyntaxHelp extends FormSpecialPage {
 
-    private IContentHandlerFactory $contentHandlerFactory;
-    private ILoadBalancer $dbLoadBalancer;
-    private LinkTargetLookup $linkTargetLookup;
-    private MediaWikiTitleCodec $titleCodec;
+	private IContentHandlerFactory $contentHandlerFactory;
+	private ILoadBalancer $dbLoadBalancer;
+	private LinkTargetLookup $linkTargetLookup;
+	private MediaWikiTitleCodec $titleCodec;
 
-    /**
-     * @param IContentHandlerFactory $contentHandlerFactory
-     * @param ILoadBalancer $dbLoadBalancer
-     * @param LinkTargetLookup $linkTargetLookup
-     * @param MediaWikiTitleCodec $titleCodec
-     *   We only request the `TitleFormatter` service but we also want the
-     *   `TitleParser` service - they are currently implemented together
-     *   as the `MediaWikiTitleCodec` class so we just type against that instead
-     *   of getting multiple services that in reality are the same object
-     */
-    public function __construct(
-        IContentHandlerFactory $contentHandlerFactory,
-        ILoadBalancer $dbLoadBalancer,
-        LinkTargetLookup $linkTargetLookup,
-        MediaWikiTitleCodec $titleCodec
-    ) {
-        parent::__construct( 'ConfigureSyntaxHelp' );
-        $this->contentHandlerFactory = $contentHandlerFactory;
-        $this->dbLoadBalancer = $dbLoadBalancer;
-        $this->linkTargetLookup = $linkTargetLookup;
-        $this->titleCodec = $titleCodec;
-    }
+	/**
+	 * @param IContentHandlerFactory $contentHandlerFactory
+	 * @param ILoadBalancer $dbLoadBalancer
+	 * @param LinkTargetLookup $linkTargetLookup
+	 * @param MediaWikiTitleCodec $titleCodec
+	 *   We only request the `TitleFormatter` service but we also want the
+	 *   `TitleParser` service - they are currently implemented together
+	 *   as the `MediaWikiTitleCodec` class so we just type against that instead
+	 *   of getting multiple services that in reality are the same object
+	 */
+	public function __construct(
+		IContentHandlerFactory $contentHandlerFactory,
+		ILoadBalancer $dbLoadBalancer,
+		LinkTargetLookup $linkTargetLookup,
+		MediaWikiTitleCodec $titleCodec
+	) {
+		parent::__construct( 'ConfigureSyntaxHelp' );
+		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->dbLoadBalancer = $dbLoadBalancer;
+		$this->linkTargetLookup = $linkTargetLookup;
+		$this->titleCodec = $titleCodec;
+	}
 
-    /**
-     * Get the fields for this form page - we want a single field for each
-     * content model.
-     *
-     * @inheritDoc
-     */
-    protected function getFormFields() {
-        $fields = [];
+	/**
+	 * Get the fields for this form page - we want a single field for each
+	 * content model.
+	 *
+	 * @inheritDoc
+	 */
+	protected function getFormFields() {
+		$fields = [];
 
-        $pages = $this->getAllHelpPages();
+		$pages = $this->getAllHelpPages();
 
-        // Allow users without the `syntaxhelp-configure` right to view the
-        // configuration but not edit it.
-        $readonly = !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' );
+		// Allow users without the `syntaxhelp-configure` right to view the
+		// configuration but not edit it.
+		$readonly = !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' );
 
-        foreach ( $pages as $contentModel => $pageName ) {
-            // $pageName is false if it was invalid; will be deleted on
-            // submission but should treat as missing here
-            if ( $pageName === false ) {
-                $pageName = '';
-            }
-            $fields['content-model-' . $contentModel ] = [
-                'type' => 'title',
-                'default' => $pageName,
-                'label-message' => [ 'configuresyntaxhelp-model', $contentModel ],
-                'creatable' => true,
-                'required' => false,
-                // use `readonly` rather than `disabled` on the input fields
-                // so that existing values are more readable; functionally
-                // equivalent.
-                'readonly' => $readonly,
-            ];
-        }
-        return $fields;
-    }
+		foreach ( $pages as $contentModel => $pageName ) {
+			// $pageName is false if it was invalid; will be deleted on
+			// submission but should treat as missing here
+			if ( $pageName === false ) {
+				$pageName = '';
+			}
+			$fields['content-model-' . $contentModel ] = [
+				'type' => 'title',
+				'default' => $pageName,
+				'label-message' => [ 'configuresyntaxhelp-model', $contentModel ],
+				'creatable' => true,
+				'required' => false,
+				// use `readonly` rather than `disabled` on the input fields
+				// so that existing values are more readable; functionally
+				// equivalent.
+				'readonly' => $readonly,
+			];
+		}
+		return $fields;
+	}
 
-    /**
-     * Update the HTMLForm to remove the submission button for users without
-     * the `syntaxhelp-configure` permission.
-     *
-     * @param HTMLForm $form
-     */
-    protected function alterForm( HTMLForm $form ) {
-        if ( !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' ) ) {
-            // We just remove the default submission button; a user could still
-            // try and submit by modifying the HTML manually, so there will
-            // also be a check when the form is submitted, but we shouldn't
-            // show the submit button if we know the user is not allowed to
-            // use it.
-            $form->suppressDefaultSubmit();
-        }
-    }
+	/**
+	 * Update the HTMLForm to remove the submission button for users without
+	 * the `syntaxhelp-configure` permission.
+	 *
+	 * @param HTMLForm $form
+	 */
+	protected function alterForm( HTMLForm $form ) {
+		if ( !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' ) ) {
+			// We just remove the default submission button; a user could still
+			// try and submit by modifying the HTML manually, so there will
+			// also be a check when the form is submitted, but we shouldn't
+			// show the submit button if we know the user is not allowed to
+			// use it.
+			$form->suppressDefaultSubmit();
+		}
+	}
 
-    /**
-     * Handle the submission of the form.
-     *
-     * @param array $data The data of the various form fields
-     * @return bool
-     */
-    public function onSubmit( array $data ) {
-        // Verify that the user can submit, in case were shown a read-only
-        // version but messed around with the raw HTML
-        if ( !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' ) ) {
-            throw new PermissionsError( 'syntaxhelp-configure' );
-        }
+	/**
+	 * Handle the submission of the form.
+	 *
+	 * @param array $data The data of the various form fields
+	 * @return bool
+	 */
+	public function onSubmit( array $data ) {
+		// Verify that the user can submit, in case were shown a read-only
+		// version but messed around with the raw HTML
+		if ( !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' ) ) {
+			throw new PermissionsError( 'syntaxhelp-configure' );
+		}
 
-        // We only want to add rows for real content models (valid ones plus
-        // any currently in the database)
-        $currPages = $this->getAllHelpPages();
+		// We only want to add rows for real content models (valid ones plus
+		// any currently in the database)
+		$currPages = $this->getAllHelpPages();
 
-        $updates = [];
-        $deletions = [];
-        $dbw = $this->dbLoadBalancer->getConnection( DB_PRIMARY );
+		$updates = [];
+		$deletions = [];
+		$dbw = $this->dbLoadBalancer->getConnection( DB_PRIMARY );
 
-        foreach ( $currPages as $contentModel => $currPageName ) {
-            $newPage = $data['content-model-' . $contentModel];
-            if ( $newPage === $currPageName ) {
-                continue;
-            }
-            // For the content models where the page changed, we delete the
-            // existing rows so that we can do the insertion all at once
-            $deletions[] = $contentModel;
-            if ( $newPage === '' ) {
-                continue;
-            }
-            $linkId = $this->linkTargetLookup->acquireLinkTargetId(
-                $this->titleCodec->parseTitle( $newPage ),
-                $dbw
-            );
-            $updates[] = [
-                'mesh_content_model' => $contentModel,
-                'mesh_help_page' => $linkId
-            ];
-        }
+		foreach ( $currPages as $contentModel => $currPageName ) {
+			$newPage = $data['content-model-' . $contentModel];
+			if ( $newPage === $currPageName ) {
+				continue;
+			}
+			// For the content models where the page changed, we delete the
+			// existing rows so that we can do the insertion all at once
+			$deletions[] = $contentModel;
+			if ( $newPage === '' ) {
+				continue;
+			}
+			$linkId = $this->linkTargetLookup->acquireLinkTargetId(
+				$this->titleCodec->parseTitle( $newPage ),
+				$dbw
+			);
+			$updates[] = [
+				'mesh_content_model' => $contentModel,
+				'mesh_help_page' => $linkId
+			];
+		}
 
-        if ( $deletions ) {
-            $dbw->delete(
-                'me_syntaxhelp',
-                [ 'mesh_content_model' => $deletions ],
-                __METHOD__
-            );
-        }
-        if ( $updates ) {
-            $dbw->insert(
-                'me_syntaxhelp',
-                $updates,
-                __METHOD__
-            );
-        }
+		if ( $deletions ) {
+			$dbw->delete(
+				'me_syntaxhelp',
+				[ 'mesh_content_model' => $deletions ],
+				__METHOD__
+			);
+		}
+		if ( $updates ) {
+			$dbw->insert(
+				'me_syntaxhelp',
+				$updates,
+				__METHOD__
+			);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Show this page using the OOUI output rather than the default, so that
-     * it looks a bit nicer.
-     *
-     * @return string
-     */
-    protected function getDisplayFormat() {
-        return 'ooui';
-    }
+	/**
+	 * Show this page using the OOUI output rather than the default, so that
+	 * it looks a bit nicer.
+	 *
+	 * @return string
+	 */
+	protected function getDisplayFormat() {
+		return 'ooui';
+	}
 
-    /**
-     * Add a message informing the user that the configuration was saved when
-     * the form submission succeeds.
-     */
-    public function onSuccess() {
-        $this->getOutput()->addWikiMsg( 'configuresyntaxhelp-saved' );
-    }
+	/**
+	 * Add a message informing the user that the configuration was saved when
+	 * the form submission succeeds.
+	 */
+	public function onSuccess() {
+		$this->getOutput()->addWikiMsg( 'configuresyntaxhelp-saved' );
+	}
 
-    /**
-     * Get the details of all help pages. Returns an array with an entry for
-     * any content model that is defined (according to the content handler
-     * factory) OR that already has an entry in the database for a help page
-     * (in case an extension was uninstalled).
-     *
-     * The values are either
-     * - an empty string (no help page set)
-     * - `false` (an invalid help page was set and should be cleared on update)
-     * - string (the name of the help page, including namespace)
-     *
-     * @return array
-     */
-    private function getAllHelpPages(): array {
-        $pages = [];
+	/**
+	 * Get the details of all help pages. Returns an array with an entry for
+	 * any content model that is defined (according to the content handler
+	 * factory) OR that already has an entry in the database for a help page
+	 * (in case an extension was uninstalled).
+	 *
+	 * The values are either
+	 * - an empty string (no help page set)
+	 * - `false` (an invalid help page was set and should be cleared on update)
+	 * - string (the name of the help page, including namespace)
+	 *
+	 * @return array
+	 */
+	private function getAllHelpPages(): array {
+		$pages = [];
 
-        // For each known content model, add a field
-        $knownModels = $this->contentHandlerFactory->getContentModels();
-        foreach ( $knownModels as $model ) {
-            $pages[ $model ] = '';
-        }
-        $inHelpTable = $this->dbLoadBalancer
-            ->getConnection( DB_REPLICA )
-            ->newSelectQueryBuilder()
-            ->select( '*' )
-            ->from( 'me_syntaxhelp' )
-            ->caller( __METHOD__ )
-            ->fetchResultSet();
+		// For each known content model, add a field
+		$knownModels = $this->contentHandlerFactory->getContentModels();
+		foreach ( $knownModels as $model ) {
+			$pages[ $model ] = '';
+		}
+		$inHelpTable = $this->dbLoadBalancer
+			->getConnection( DB_REPLICA )
+			->newSelectQueryBuilder()
+			->select( '*' )
+			->from( 'me_syntaxhelp' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
-        foreach ( $inHelpTable as $row ) {
-            $linkTarget = $this->linkTargetLookup->getLinkTargetById(
-                $row->mesh_help_page
-            );
-            if ( $linkTarget === null ) {
-                // Somehow an invalid value was included - include it in the
-                // output but as `false` so that it can be deleted later but
-                // not shown
-                $pages[ $row->mesh_content_model ] = false;
-                continue;
-            }
-            $pageName = $this->titleCodec->getPrefixedText( $linkTarget );
-            $pages[ $row->mesh_content_model ] = $pageName;
-        }
-        return $pages;
-    }
+		foreach ( $inHelpTable as $row ) {
+			$linkTarget = $this->linkTargetLookup->getLinkTargetById(
+				$row->mesh_help_page
+			);
+			if ( $linkTarget === null ) {
+				// Somehow an invalid value was included - include it in the
+				// output but as `false` so that it can be deleted later but
+				// not shown
+				$pages[ $row->mesh_content_model ] = false;
+				continue;
+			}
+			$pageName = $this->titleCodec->getPrefixedText( $linkTarget );
+			$pages[ $row->mesh_content_model ] = $pageName;
+		}
+		return $pages;
+	}
 
 }
