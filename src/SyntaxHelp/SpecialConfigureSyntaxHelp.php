@@ -3,9 +3,11 @@
 namespace MediaWiki\Extension\MinimalExample\SyntaxHelp;
 
 use FormSpecialPage;
+use HTMLForm;
 use MediaWiki\Content\IContentHandlerFactory;
 use MediaWiki\Linker\LinkTargetLookup;
 use MediaWikiTitleCodec;
+use PermissionsError;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
@@ -36,7 +38,7 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
         LinkTargetLookup $linkTargetLookup,
         MediaWikiTitleCodec $titleCodec
     ) {
-        parent::__construct( 'ConfigureSyntaxHelp', 'syntaxhelp-configure' );
+        parent::__construct( 'ConfigureSyntaxHelp' );
         $this->contentHandlerFactory = $contentHandlerFactory;
         $this->dbLoadBalancer = $dbLoadBalancer;
         $this->linkTargetLookup = $linkTargetLookup;
@@ -52,6 +54,10 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
 
         $pages = $this->getAllHelpPages();
 
+        // Allow users without the `syntaxhelp-configure` right to view the
+        // configuration but not edit it.
+        $readonly = !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' );
+
         foreach ( $pages as $contentModel => $pageName ) {
             // $pageName is false if it was invalid; will be deleted on
             // submission but should treat as missing here
@@ -64,9 +70,30 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
                 'label-message' => [ 'configuresyntaxhelp-model', $contentModel ],
                 'creatable' => true,
                 'required' => false,
+                // use `readonly` rather than `disabled` on the input fields
+                // so that existing values are more readable; functionally
+                // equivalent.
+                'readonly' => $readonly,
             ];
         }
         return $fields;
+    }
+
+    /**
+     * Update the HTMLForm to remove the submission button for users without
+     * the `syntaxhelp-configure` permission.
+     *
+     * @param HTMLForm $form
+     */
+    protected function alterForm( HTMLForm $form ) {
+        if ( !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' ) ) {
+            // We just remove the default submission button; a user could still
+            // try and submit by modifying the HTML manually, so there will
+            // also be a check when the form is submitted, but we shouldn't
+            // show the submit button if we know the user is not allowed to
+            // use it.
+            $form->suppressDefaultSubmit();
+        }
     }
 
     /**
@@ -75,6 +102,12 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
      * @param array $data The data of the various form fields
      */
     public function onSubmit( array $data ) {
+        // Verify that the user can submit, in case were shown a read-only
+        // version but messed around with the raw HTML
+        if ( !$this->getAuthority()->isAllowed( 'syntaxhelp-configure' ) ) {
+            throw new PermissionsError( 'syntaxhelp-configure' );
+        }
+
         // We only want to add rows for real content models (valid ones plus
         // any currently in the database)
         $currPages = $this->getAllHelpPages();
