@@ -1,14 +1,14 @@
 {
-    "require": {
-        "league/commonmark": "2.8.0"
-    },
-    "require-dev": {
-        "mediawiki/mediawiki-codesniffer": "38.0.0"
-    },
-    "scripts": {
-        "test": [
-            "@phpcs"
-        ],
-        "phpcs": "phpcs -sp --cache"
-    }
+	"require": {
+		"league/commonmark": "2.8.0"
+	},
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "38.0.0"
+	},
+	"scripts": {
+		"test": [
+			"@phpcs"
+		],
+		"phpcs": "phpcs -sp --cache"
+	}
 }
