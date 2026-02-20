@@ -68,7 +68,7 @@ class ApiGetSyntaxHelp extends ApiBase {
      * and the value `true` (if there is no page configured or the page
      * configured is invalid) or an array with the key 'page' and the value
      * being the name of the page.
-     * 
+     *
      * @param string $contentModel
      * @return array
      */
@@ -93,6 +93,7 @@ class ApiGetSyntaxHelp extends ApiBase {
         return [ 'page' => $this->titleCodec->getPrefixedText( $linkTarget ) ];
     }
 
+    /** @inheritDoc */
     public function getAllowedParams() {
         $validModels = $this->contentHandlerFactory->getContentModels();
         return [
@@ -106,6 +107,7 @@ class ApiGetSyntaxHelp extends ApiBase {
         ];
     }
 
+    /** @inheritDoc */
     protected function getExamplesMessages() {
         return [
             'action=getsyntaxhelp&contentmodel=wikitext'

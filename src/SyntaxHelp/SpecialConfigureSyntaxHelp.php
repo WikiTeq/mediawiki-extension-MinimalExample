@@ -48,6 +48,8 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
     /**
      * Get the fields for this form page - we want a single field for each
      * content model.
+     *
+     * @inheritDoc
      */
     protected function getFormFields() {
         $fields = [];
@@ -98,8 +100,9 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
 
     /**
      * Handle the submission of the form.
-     * 
+     *
      * @param array $data The data of the various form fields
+     * @return bool
      */
     public function onSubmit( array $data ) {
         // Verify that the user can submit, in case were shown a read-only
@@ -158,7 +161,7 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
     /**
      * Show this page using the OOUI output rather than the default, so that
      * it looks a bit nicer.
-     * 
+     *
      * @return string
      */
     protected function getDisplayFormat() {
@@ -178,7 +181,7 @@ class SpecialConfigureSyntaxHelp extends FormSpecialPage {
      * any content model that is defined (according to the content handler
      * factory) OR that already has an entry in the database for a help page
      * (in case an extension was uninstalled).
-     * 
+     *
      * The values are either
      * - an empty string (no help page set)
      * - `false` (an invalid help page was set and should be cleared on update)

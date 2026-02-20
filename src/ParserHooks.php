@@ -22,7 +22,7 @@ class ParserHooks implements
      * Like special pages and API modules, hook handlers can have dependencies
      * injected! See T240307 for how this got implemented in 2019 - it was a
      * huge change. Previously, services needed to be retrieved manually.
-     * 
+     *
      * @param TitleFactory $titleFactory
      * @param UserOptionsLookup $userOptionsLookup
      */
@@ -101,27 +101,28 @@ class ParserHooks implements
      * Handler for the magic word `PAGECONTENTMODEL`. The arguments
      * given here are the parser itself, and then any parameters given to
      * the magic word.
-     * 
+     *
      * - Since this magic word should only be used for one page at a time, we
      * ignore any subsequent parameters.
-     * 
+     *
      * - If the page name is empty, we will use the page currently being parsed;
      * even though parser functions are only used for wikitext, other content
      * models (like MassMessage's MassMessageListContent) can include wikitext,
      * so we still need to check the content model, but since the title object
      * is already known, the check is not considered "expensive".
-     * 
+     *
      * - Since looking up a page content model is an "expensive" operation in
      * the sense that it generally requires a database lookup, we will mark this
      * parser function as "expensive"; the number of expensive parser function
      * calls that can be used on a single page is limited by the configuration
      * variable $wgExpensiveParserFunctionLimit, which defaults to 100.
-     * 
+     *
      * - For pages that do not exist, we cannot be sure what their content
      * model is going to be, so return an empty string.
-     * 
+     *
      * @param Parser $parser
      * @param string $pagename
+     * @return string The page content model
      */
     public function getPageContentModel(
         Parser $parser,
