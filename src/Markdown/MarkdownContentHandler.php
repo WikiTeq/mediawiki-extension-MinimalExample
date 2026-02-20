@@ -13,6 +13,7 @@ use League\CommonMark\Parser\MarkdownParser;
 use League\CommonMark\Renderer\HtmlRenderer;
 use League\CommonMark\Util\RegexHelper;
 use MediaWiki\Content\Renderer\ContentParseParams;
+use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Utils\UrlUtils;
 use Parser;
 use ParserFactory;
@@ -26,6 +27,7 @@ use TitleFactory;
  */
 class MarkdownContentHandler extends TextContentHandler {
 
+    private LinkRenderer $linkRenderer;
     private ParserFactory $parserFactory;
     private TitleFactory $titleFactory;
     private UrlUtils $urlUtils;
@@ -35,12 +37,14 @@ class MarkdownContentHandler extends TextContentHandler {
      * dependencies injected.
      * 
      * @param string $modelId
+     * @param LinkRenderer $linkRenderer
      * @param ParserFactory $parserFactory
      * @param TitleFactory $titleFactory
      * @param UrlUtils $urlUtils
      */
     public function __construct(
         string $modelId,
+        LinkRenderer $linkRenderer,
         ParserFactory $parserFactory,
         TitleFactory $titleFactory,
         UrlUtils $urlUtils
@@ -48,6 +52,7 @@ class MarkdownContentHandler extends TextContentHandler {
         // The model id should always be 'markdown' since extending this class
         // is not supported
         parent::__construct( MarkdownContent::CONTENT_MODEL );
+        $this->linkRenderer = $linkRenderer;
         $this->parserFactory = $parserFactory;
         $this->titleFactory = $titleFactory;
         $this->urlUtils = $urlUtils;
@@ -163,31 +168,30 @@ class MarkdownContentHandler extends TextContentHandler {
         }
 
         $renderer = new HtmlRenderer( $env );
-        $parserOutput->setText(
-            $renderer->renderDocument( $parsedResult )
-        );
-        // Make sure we have link styles, etc.
-        $parserOutput->addWrapperDivClass( 'mw-parser-output' );
 
         // Register both local and external links with MediaWiki so that they
         // show up in page metadata and are known to API modules and special
         // pages like [[Special:WhatLinksHere]] and [[Special:LinkSearch]].
+        // This will also replace links to local pages
         $allLinks = ( new Query() )
             ->where( Query::type( Link::class ) )
             ->findAll( $parsedResult );
         foreach ( $allLinks as $link ) {
-            $url = $link->getUrl();
-            // Skip unsafe links since the renderer will skip those too; use
-            // same implementation as the renderer does, see the
-            // ...\Extension\CommonMark\Renderer\Inline\LinkRenderer::render()
-            // implementation as of version 2.8.2
-            if ( $url === '' || RegexHelper::isLinkPotentiallyUnsafe( $url ) ) {
+            $originalUrl = $link->getUrl();
+            if ( $originalUrl === '' ) {
                 continue;
             }
             // Resolve the url so that relative paths work
-            $url = $this->urlUtils->removeDotSegments( $url );
+            $url = $this->urlUtils->removeDotSegments( $originalUrl );
             if ( $this->urlUtils->parse( $url ) !== null ) {
                 // Valid external link according to MediaWiki
+                // Skip unsafe links since the renderer will skip those too; use
+                // same implementation as the renderer does, see the
+                // ...\Extension\CommonMark\Renderer\Inline\LinkRenderer::render()
+                // implementation as of version 2.8.2
+                if ( RegexHelper::isLinkPotentiallyUnsafe( $originalUrl ) ) {
+                    continue;
+                }
                 $parserOutput->addExternalLink( $url );
             } else {
                 // Not a valid external link according to MediaWiki, but that
@@ -199,11 +203,33 @@ class MarkdownContentHandler extends TextContentHandler {
                     continue;
                 }
                 $title = $this->titleFactory->newFromText( $url );
-                if ( $title !== null ) {
-                    // Only add valid titles as recorded links
-                    $parserOutput->addLink( $title );
+                if ( $title === null ) {
+                    continue;
                 }
+                // Only add valid titles as recorded links
+                $parserOutput->addLink( $title );
+                // Always use MediaWiki's rendering of wikilinks, so that we
+                // have access to redlinks for missing pages and reflect the
+                // correct paths
+                $attribs = [];
+                if ( $link->getTitle() ) {
+                    $attribs['title'] = $link->getTitle();
+                }
+                $link->replaceWith(
+                    new MWPreprocessedInline(
+                        $this->linkRenderer->makeLink(
+                            $title,
+                            $renderer->renderNodes( $link->children() ),
+                            $attribs
+                        )
+                    )
+                );
             } 
         }
+        $parserOutput->setText(
+            $renderer->renderDocument( $parsedResult )
+        );
+        // Make sure we have link styles, etc.
+        $parserOutput->addWrapperDivClass( 'mw-parser-output' );
     }
 }
