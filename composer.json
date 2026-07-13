@@ -4,8 +4,13 @@
 		"league/commonmark": "2.8.2"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "38.0.0",
-		"mediawiki/mediawiki-phan-config": "0.12.1"
+		"mediawiki/mediawiki-codesniffer": "45.0.0",
+		"mediawiki/mediawiki-phan-config": "0.14.0"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	},
 	"scripts": {
 		"test": [
