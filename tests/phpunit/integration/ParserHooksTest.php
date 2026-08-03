@@ -63,10 +63,14 @@ class ParserHooksTest extends MediaWikiIntegrationTestCase {
 			->getPage( 'ChangeContentModel' );
 
 		// Ensure the user is allowed to access the page and that the context
-		// has a page set
+		// has a page set. The title must also be set on the OutputPage itself
+		// (not just the context), since DerivativeContext::getOutput() returns
+		// the wrapped context's OutputPage rather than deriving its title from
+		// DerivativeContext::getTitle().
 		$ctx = new DerivativeContext( $contentModelChangePage->getContext() );
 		$ctx->setAuthority( $this->mockRegisteredUltimateAuthority() );
 		$ctx->setTitle( $contentModelChangePage->getPageTitle() );
+		$ctx->getOutput()->setTitle( $ctx->getTitle() );
 		$contentModelChangePage->setContext( $ctx );
 
 		$contentModelChangePage->execute( '' );
