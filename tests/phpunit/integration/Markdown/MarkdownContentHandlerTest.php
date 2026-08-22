@@ -79,5 +79,83 @@ class MarkdownContentHandlerTest extends MediaWikiIntegrationTestCase {
 			'![x](a]]b.png)',
 			']]b'
 		];
+		yield 'Percent-encoded subpage traversal' => [
+			'![x](..%2F..%2Fsecrets.png)',
+			'../'
+		];
+	}
+
+	/** @dataProvider provideNeutralizedImageUrl */
+	public function testNeutralizedImageDoesNotLeakUrl(
+		string $markdown,
+		string $originalUrl
+	) {
+		$html = $this->renderMarkdown( $markdown );
+
+		// The image was neutralized, so the URL that failed validation may
+		// not leak into the output, whether as raw markup or after entity
+		// decoding
+		$decodedHtml = html_entity_decode( $html, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		foreach ( [ $html, $decodedHtml ] as $haystack ) {
+			$this->assertStringNotContainsString( $originalUrl, $haystack );
+		}
+	}
+
+	public static function provideNeutralizedImageUrl() {
+		yield 'Raw closing brackets neutralized to empty src' => [
+			'![x](https://example.com/a]]b.png)',
+			'https://example.com/a]]b.png'
+		];
+		yield 'Subpage traversal rejected as invalid title' => [
+			'![x](../secrets.png)',
+			'../secrets.png'
+		];
+	}
+
+	/** @dataProvider provideSubpageTraversalImageUrl */
+	public function testSubpageTraversalStaysWithinFileNamespace(
+		string $markdown,
+		string $expectedFileTitleText
+	) {
+		$html = $this->renderMarkdown( $markdown );
+
+		// The traversal is resolved to a File-namespace title (no breakout of
+		// that namespace), so the file name must still render through the
+		// [[File:...]] path like any other local image
+		$this->assertStringContainsString( $expectedFileTitleText, $html );
+
+		// No path segments outside the file name may leak into the output,
+		// whether raw or after entity decoding
+		$decodedHtml = html_entity_decode( $html, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		foreach ( [ $html, $decodedHtml ] as $haystack ) {
+			$this->assertStringNotContainsString( '../', $haystack );
+			$this->assertStringNotContainsString( '..%2F', $haystack );
+		}
+	}
+
+	public static function provideSubpageTraversalImageUrl() {
+		yield 'Plain relative traversal resolves to valid File title' => [
+			'![x](../Example.png)',
+			'Example.png'
+		];
+		yield 'Percent-encoded traversal resolves to valid File title' => [
+			'![x](..%2FExample.png)',
+			'Example.png'
+		];
+	}
+
+	public function testFragmentInRelativeUrlIsTruncatedNotRendered() {
+		$html = $this->renderMarkdown(
+			'![x](Example.png#frag)'
+		);
+
+		// MediaWiki title parsing splits off the #fragment and truncates the
+		// dbkey at it, so only "Example.png" remains as the file name; the
+		// fragment itself may not appear in the output
+		$this->assertStringContainsString( 'Example.png', $html );
+		$decodedHtml = html_entity_decode( $html, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		foreach ( [ $html, $decodedHtml ] as $haystack ) {
+			$this->assertStringNotContainsString( '#frag', $haystack );
+		}
 	}
 }
