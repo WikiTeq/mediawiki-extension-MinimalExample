@@ -1,7 +1,7 @@
 {
 	"license": "MIT",
 	"require": {
-		"league/commonmark": "2.8.2"
+		"league/commonmark": "^2.9.0"
 	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "38.0.0",
