@@ -37,7 +37,10 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          # Dev tooling only (phpcs/phplint) — kept ahead of the extension's own
+          # PHP 8.1 floor (see extension.json) so mediawiki-codesniffer can stay
+          # on a release with a patched squizlabs/php_codesniffer.
+          php-version: '8.2'
           extensions: mbstring, intl
           coverage: none
           tools: composer, phpcs, phplint
@@ -63,7 +66,10 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          # Dev tooling only (Phan) — see the style-php job for why this runs
+          # ahead of the extension's PHP 8.1 floor. --minimum-target-php-version
+          # below stays 8.1 since that's what Phan checks the code against.
+          php-version: '8.2'
           extensions: mbstring, intl, ast
           coverage: none
           tools: composer
