@@ -53,6 +53,8 @@ jobs:
   security:
     name: Static Analysis
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
