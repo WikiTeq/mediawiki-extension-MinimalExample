@@ -94,7 +94,7 @@ class SpecialDoesUserExist extends SpecialPage {
 		// the submission to reload the page with the parameter, but this needs
 		// to be called with something
 		$form->setSubmitCallback(
-			fn () => false
+			static fn () => false
 		);
 
 		// Tell the form to show itself; we don't need to manually add it to
