@@ -4,12 +4,17 @@
 		"league/commonmark": "^2.9.1"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "51.0.1",
+		"mediawiki/mediawiki-codesniffer": "45.0.0",
 		"mediawiki/mediawiki-phan-config": "0.14.0"
 	},
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"audit": {
+			"ignore": {
+				"PKSA-rdkp-vv9z-mjkg": "squizlabs/php_codesniffer command injection (CVE-2026-67434) only affects the Gitblame/Hgblame/Svnblame reports, which this repo never invokes. mediawiki-codesniffer is pinned to match MediaWiki core's REL1_43 require-dev (45.0.0) for the merged composer resolution used by the PHPUnit and Static Analysis CI jobs."
+			}
 		}
 	},
 	"scripts": {
