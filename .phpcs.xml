@@ -8,6 +8,13 @@
 			annoying.
 		-->
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationPrivate" />
+		<!--
+			phpcsutils < 1.2.3 runs eval() on array keys in these two sniffs
+			(GHSA-r6hr-vr92-vv28). They are not enabled by the MediaWiki standard;
+			the excludes keep them off. See the audit ignore in composer.json.
+		-->
+		<exclude name="Universal.Arrays.DuplicateArrayKey" />
+		<exclude name="Universal.Arrays.MixedArrayKeyTypes" />
 	</rule>
 	<rule ref="MediaWiki.Commenting.ClassLevelLicense">
 		<properties>

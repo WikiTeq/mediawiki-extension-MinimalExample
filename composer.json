@@ -14,7 +14,8 @@
 		},
 		"audit": {
 			"ignore": {
-				"PKSA-rdkp-vv9z-mjkg": "squizlabs/php_codesniffer command injection (CVE-2026-67434) only affects the Gitblame/Hgblame/Svnblame reports, which this repo never invokes. mediawiki-codesniffer is pinned to match MediaWiki core's REL1_43 require-dev (45.0.0) for the merged composer resolution used by the PHPUnit and Static Analysis CI jobs."
+				"PKSA-rdkp-vv9z-mjkg": "squizlabs/php_codesniffer command injection (CVE-2026-67434) only affects the Gitblame/Hgblame/Svnblame reports, which this repo never invokes. mediawiki-codesniffer is pinned to match MediaWiki core's REL1_43 require-dev (45.0.0) for the merged composer resolution used by the PHPUnit and Static Analysis CI jobs.",
+				"PKSA-kh6k-gs3g-dgr6": "phpcsstandards/phpcsutils arbitrary code execution (GHSA-r6hr-vr92-vv28) fixed in 1.2.3, which requires squizlabs/php_codesniffer ^3.13.5 and so conflicts with the mediawiki-codesniffer 45.0.0 pin. The bug is only reachable through the Universal.Arrays.DuplicateArrayKey and Universal.Arrays.MixedArrayKeyTypes sniffs, which are excluded in .phpcs.xml. Remove this ignore when mediawiki-codesniffer is upgraded."
 			}
 		}
 	},
