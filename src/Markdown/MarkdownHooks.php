@@ -20,7 +20,7 @@ class MarkdownHooks implements ContentHandlerDefaultModelForHook {
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
 	public function onContentHandlerDefaultModelFor( $title, &$model ) {
-		if ( str_ends_with( $title->getText(), '.md' ) ) {
+		if ( substr( $title->getText(), -3 ) === '.md' ) {
 			$model = MarkdownContent::CONTENT_MODEL;
 			// Prevent other hooks from changing the content model to something
 			// else

@@ -53,6 +53,11 @@ class DisplayDetailsHandler implements BeforePageDisplayHook {
 			return;
 		}
 		$content = $revision->getContent( SlotRegistrationHandler::EXTRA_DETAILS_ROLE );
+		if ( $content === null ) {
+			// Content can be null even when hasSlot() returns true, e.g. if
+			// the content is suppressed or the audience cannot view it
+			return;
+		}
 		if ( !$content instanceof WikitextContent ) {
 			$out->prependHTML(
 				Html::errorBox(

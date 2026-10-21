@@ -122,6 +122,11 @@ class ApiSetExtraDetails extends ApiBase {
 			return '';
 		}
 		$content = $revision->getContent( SlotRegistrationHandler::EXTRA_DETAILS_ROLE );
+		if ( $content === null ) {
+			// Content can be null even when hasSlot() returns true, e.g. if
+			// the content is suppressed or the audience cannot view it
+			return '';
+		}
 		if ( !$content instanceof WikitextContent ) {
 			$this->dieWithError( [
 				'apierror-setextradetails-not-wikitext',
