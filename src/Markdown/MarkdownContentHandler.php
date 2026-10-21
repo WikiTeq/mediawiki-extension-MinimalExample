@@ -152,14 +152,31 @@ class MarkdownContentHandler extends TextContentHandler {
 				$image->setUrl( '' );
 				continue;
 			}
-			// Otherwise, render the image with MediaWiki, and then replace the
-			// `Image` node with our own `MWPreprocessedInline` type.
-			// This does *not* present an opportunity for escaping from markdown
-			// and using normal wikitext, since any `]` or `<` in the $url will
-			// have been encoded by the CommonMark parsing. `{` within a page
-			// name doesn't change anything.
+			// Otherwise, resolve the URL to a File-namespace title and only
+			// render it if that succeeds: this is defense-in-depth against
+			// wikitext injection (the same class as SLOP-37), since the URL is
+			// user-controlled from the markdown. The CommonMark parser percent-
+			// encodes characters with syntactic meaning - including `]`, `[`,
+			// and `<` - via League\CommonMark\Util\UrlEncoder::unescapeAndEncode(),
+			// but rather than relying on that encoding we validate the URL as a
+			// title and then build the `[[File:` wikitext from
+			// Title::getDBkey(), which is guaranteed to contain no `]]`, `[[`,
+			// `{`, or other markup, so nothing can break out of the image link.
+			// Note that CommonMark leaves already-percent-encoded sequences
+			// untouched, so decode them before validating.
+			$fileTitle = $this->titleFactory->newFromText(
+				rawurldecode( $url ),
+				NS_FILE
+			);
+			if ( $fileTitle === null || !$fileTitle->inNamespace( NS_FILE ) ) {
+				// Not a valid File-namespace title; neutralize the image the
+				// same way as external images above, so that the URL that
+				// failed validation cannot leak into the output either
+				$image->setUrl( '' );
+				continue;
+			}
 			$mwParsedImageOut = $mwParser->parse(
-				'[[File:' . $url . ']]',
+				'[[File:' . $fileTitle->getDBkey() . ']]',
 				$cpoParams->getPage(),
 				ParserOptions::newFromAnon(),
 				true,
