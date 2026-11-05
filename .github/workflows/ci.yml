@@ -37,7 +37,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.2'
           extensions: mbstring, intl
           coverage: none
           tools: composer, phpcs, phplint
@@ -46,7 +46,7 @@ jobs:
       - name: Setup Composer
         run: composer update
       - name: Lint
-        run: phplint -w --exclude=vendor
+        run: phplint lint . -w --exclude=vendor
       - name: PHP Code Sniffer
         run: vendor/bin/phpcs -sp --standard=.phpcs.xml .
 
@@ -75,6 +75,11 @@ jobs:
         with:
           path: extensions/${{ env.EXTNAME }}
       - name: Setup Composer
+        # MediaWiki REL1_39 core pins guzzle, symfony/yaml and codesniffer
+        # versions that have security advisories. The pins are outside this
+        # repository, so allow Composer to install them for static analysis.
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: 1
         run: |
           echo '{"extra":{"merge-plugin":{"include":["extensions/*/composer.json","skins/*/composer.json"]}}}' > composer.local.json
           composer update
